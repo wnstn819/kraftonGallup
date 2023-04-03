@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-   return 'This is Home! 2'
+   return 'This is Home! 2222'
 
 @app.route('/mypage')
 def mypage():  
