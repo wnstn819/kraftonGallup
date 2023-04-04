@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<html>
+<head>
+    <title>title</title>
+</head>
+<script>
+      $(document).ready(function () {
+            getUsername();
+
+        });
+     function getUsername(){
+            $.ajax({
+            type: "GET",
+            headers: {
+                'Authorization' : `Bearer ${$.cookie('mytoken')}`,
+            },
+            url: "/protected",
+            data: {},
+            success: (res) => {
+                console.log(res);
+                if (res['result'] == 'success') {
+                  
+                        
+                }else{
+                    console.log("fail");
+                }
+            }
+
+        })
+    }
+  
+
+        
+</script>
+<body>
+
+    Hello! list
+    <input type="submit" value="로그아웃" onclick="logout()" />
+
+</body>
+
+
+
+    
+    
+
+
+</body>
+</html>

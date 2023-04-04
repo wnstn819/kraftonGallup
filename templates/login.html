@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<html>
+<head>
+    <title>title</title>
+</head>
+
+<script>
+       function joinAdd() {
+        console.log("제출 클릭");
+
+        let id = $('#join-id').val();
+        let pw = $('#join-pw').val();
+
+            console.log(id);
+            console.log(pw);
+        $.ajax({
+            type: "POST",
+            url: "/join/add",
+            data: { "username": id, "password" : pw },
+            success: (res) => {
+                console.log(res);
+                if (res['result'] == 'success') {
+                    for(a in res){
+                        console.log(a);
+                    }
+                        
+                }else{
+                    console.log("fail");
+                }
+            }
+
+        })
+
+        }
+
+
+        function login() {
+        console.log("제출 클릭");
+
+        let id = $('#login-id').val();
+        let pw = $('#login-pw').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/home/login",
+            data: { "username": id, "password" : pw },
+            success: (res) => {
+                console.log(res);
+                if (res['result'] == 'success') {
+                    $.cookie('mytoken', res['token'], {path: '/'});
+                    window.location.replace("/list")
+                        
+                }else{
+                    console.log("fail");
+                }
+            }
+
+        })
+
+        }
+
+   
+
+</script>
+<body>
+
+
+    <input type="text" id="join-id" placeholder="아이디를 입력해주세요"/>
+    <input type="password" id = "join-pw" placeholder="비밀번호를 입력해주세요"/>
+    <input type="submit" title="제출" onclick="joinAdd()">
+<hr/>
+    <input type="text" id="login-id" placeholder="아이디를 입력해주세요"/>
+    <input type="password" id = "login-pw" placeholder="비밀번호를 입력해주세요"/>
+    <input type="submit" title="제출" onclick="login()">
+    <hr/>
+   
+
+</body>
+
+
+</html>
