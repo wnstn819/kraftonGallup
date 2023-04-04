@@ -14,13 +14,23 @@ list_collection = db["list"]
 
 
 
+
 app = Flask(__name__)
 # 로그인 페이지
 
 jwtM = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'testKey'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=10) # define the life span of the token
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1) # define the life span of the token
 
+if 'user_counters' in db.list_collection_names():
+    print(db.list_collection_names())
+else :
+    db.userCounters.insert_one({"seq" : 0})
+
+if 'list_counters' in db.list_collection_names():
+    print(db.list_collection_names())
+else :
+    db.listCounters.insert_one({"seq" : 0})
 
 @app.route('/')
 def home():
@@ -52,20 +62,23 @@ def register():
      
      new_user_pw = hashlib.sha256(new_user_pw.encode("utf-8")).hexdigest() # encrpt password
      doc = users_collection.find_one({"username": new_user_name})
-
+     seq = db.userCounters.find({})[0]['seq']
      new_user ={
+         '_id': seq,
          'username' : new_user_name,
-         'password' : new_user_pw
+         'password' : request.form['password'],
+         'token' : new_user_pw
      }
      if not doc:
           users_collection.insert_one(new_user)
+          db.userCounters.update_one({'seq': seq},{'$set':{'seq' : (seq+1)}})
           return jsonify({'msg' : 'User created successfully', 'result': 'success'}) , 201
      else:
           return jsonify({'msg' : 'Username already exists'}),409
 
 
 
-#protected
+#protected - 토큰 있는지 체크
 @app.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
@@ -80,9 +93,7 @@ def protected():
 
 @app.route('/list')
 def list_main():  
-   token_receive = request.cookies.get('mytoken')
-   print("-----테스트------")
-   print(token_receive)
+   # token_receive = request.cookies.get('mytoken')
    return render_template('list.html', a="list")
 
 
@@ -94,10 +105,35 @@ def get_list():
 
 
 # 새글 생성
+@app.route('/list/create')
+def contents():  
+   # token_receive = request.cookies.get('mytoken')
+   return render_template('contents.html', a="list")
 
+@app.route('/list/create/post', methods=["POST"])
+def add_contents():  
+   title = request.form['title']
+   details= request.form['details']
+   multi = request.form['multi']
+   room = request.form['room']
+   voteContents = request.form['voteContents']
 
-@app.route('/new')
-def add_page():  
+   print("---------")
+   print(multi)
+   print(details)
+
+   print("---------@@@@@@@@@@@@@@@@")
+   new_contents = {
+       "title": title,
+       "details" : details,
+       "multi" : multi,
+       "room" : room,
+       "voteContents" : voteContents
+   }
+   print("------")
+   print(new_contents)
+   print("------")
+   list_collection.insert_one(new_contents)
    return 'This is My Page!'
 
 

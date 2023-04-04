@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<html>
+<head>
+    <title>title</title>
+</head>
+
+<script>
+        let cnt = 2;
+        $(document).ready(function () {
+            getUsername();
+
+        });
+        function getUsername(){
+            $.ajax({
+            type: "GET",
+            headers: {
+                'Authorization' : `Bearer ${$.cookie('mytoken')}`,
+            },
+            url: "/protected",
+            data: {},
+            success: (res) => {
+                console.log(res);
+                if (res['result'] == 'success') {
+                   
+                }else{
+                    console.log("fail");
+                }
+            }
+
+        })
+        }
+
+        function create(){
+            var title = $("#title").val()
+            var details = $("#details").val()
+            var multi = $("input[name=multi]:checked").val()
+            var room = $("input[name=class]:checked").val()
+            let parse = {};            
+            for(i = 1;i<=cnt;i++){
+                let value = $(`#text${i}`).val()
+                parse[value] = []
+            }
+          
+            $.ajax({
+            type: "POST",
+            url: "/list/create/post",
+            data: {"title": title, "details" : details, "multi": multi, "room": room, "voteContents": JSON.stringify(parse)},
+            success: (res) => {
+                console.log(res);
+                if (res['result'] == 'success') {
+                   
+                }else{
+                    console.log("fail");
+                }
+            }
+
+             })
+
+
+
+        }
+
+       
+
+
+
+    
+
+      
+
+
+     
+
+   
+
+</script>
+<body>
+
+
+    <hr/>
+    <input id = "title" placeholder="제목을 입력하세요"/>
+    <hr/>
+    <input id = "details" placeholder="설명을 입력하세요"/>
+    <hr/>
+    <p>중복체크</p>
+    <input type="radio" name="multi" value="1" checked> 가능
+    <input type="radio" name="multi" value="2" > 불가능
+    <hr/>
+    <input type="radio" name="class" value="1" checked > 레드
+    <input type="radio" name="class" value="2" > 블루
+    <input type="radio" name="class" value="3" > 그린
+    <hr/>
+    <p>항목</p>
+    <!-- <table id="contentsTable">
+        <tbody>
+            <tr class="active">
+                <td class="text-center"><input id="text1" placeholder="항목을 입력해주세요"></td>
+            </tr>
+        </tbody>
+
+        <tbody>
+            <tr class="active">
+                <td class="text-center"><input id ="text2" placeholder="항목을 입력해주세요"></td>
+            </tr>
+        </tbody>
+    </table> -->
+    <input id="text1" placeholder="내요을 입력해주세요"/>
+    <input id="text2" placeholder="내요을 입력해주세요"/>
+    <input type="submit" value="+" onclick="rowAdd()"/>
+    <input type="submit" value="작성" onclick="create()"/>
+   
+
+</body>
+
+
+</html>

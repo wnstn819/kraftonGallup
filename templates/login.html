@@ -7,6 +7,32 @@
 </head>
 
 <script>
+        
+        $(document).ready(function () {
+            $.cookie('mytoken') && getUsername();
+
+        });
+
+         function getUsername(){
+            $.ajax({
+            type: "GET",
+            headers: {
+                'Authorization' : `Bearer ${$.cookie('mytoken')}`,
+            },
+            url: "/protected",
+            data: {},
+            success: (res) => {
+                console.log(res);
+                if (res['result'] == 'success') {
+                    window.location.replace("/list")
+                }else{
+                    console.log("fail");
+                }
+            }
+
+        })
+    }
+
        function joinAdd() {
         console.log("제출 클릭");
 
