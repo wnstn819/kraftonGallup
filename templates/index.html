@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
     <!-- use bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
     <title>크래프톤 정글 BLUE | Casting Vote</title>
     <style>
         .wrap {
@@ -23,44 +26,143 @@
             text-align: center;
             padding-top: 50px;
         }
+   
+        #join-box {
+          display: none;
+        }
+
     </style>
+    <script>
+       
+        function openJoin() {
+            $('#join-box').show()
+        }
+        function closeJoin() {
+            $('#join-box').hide()
+        }
+    </script>
 </head>
 <body>
-    <div class="wrap">
-        <div class="mytitle mb-6">
-            <h1 class="title is-1">Casting Vote</h1>
+  <div class="wrap">
+    <div class="mytitle mb-6">
+      <h1 class="title is-1">Casting Vote</h1>
+    </div>
+
+  <div class="loginbox mb-4" style="margin:auto; width: 400px;">
+
+
+    <div class="field">
+      <label class="label">ID</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Text input">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control">
+        <input class="input" type="password" placeholder="Text input">
+      </div>
+    </div>
+    <div>
+      <button type="submit" class="button is-primary is-fullwidth mb-1">Login</button>
+      <button class="button is-light is-fullwidth" onclick="openJoin()">Join</button>
+    </div>
+  </div>
+  <div class="notification mb-6" style="width:500px;margin:auto;text-align: center;">
+    <p>
+      <strong>바로지금 HOT 투표글</strong><br>
+      <a href="#">학습 vs 실습 뭐가 먼저인가?</a>
+    </p>
+  </div>
+
+  <div id="join-box" class="box mb-4" style="width:1000px; margin:auto;">
+    <div class="columns">
+      <div class="column">
+        <label class="label">ID</label>
+        <div class="field has-addons ">
+          <div class="control is-expanded ">
+            <input class="input" type="text" placeholder="input ID">
+          </div>
+          <div class="control">
+            <a class="button">double check</a>
+          </div>
+        </div>
+    
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <input class="input" type="password" placeholder="input Password">
+          </div>
+          <p class="help is-success">This password is available</p>
+        </div>
+        <div class="field">
+          <label class="label">Confirm Password</label>
+          <div class="control">
+            <input class="input" type="password" placeholder="input Password">
+          </div>
+          <p class="help is-danger">This password is valid</p>
+        </div>
+      </div>
+      
+      <div class="column">
+        <div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="input Name">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Age</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="input Age">
+          </div>
+        </div>
+        <div class="field has-addons">
+          <label class="label mr-4">Gender</label>
+          <div class="control">
+            <label class="radio">
+              <input type="radio" name="question">
+              Male
+            </label>
+            <label class="radio">
+              <input type="radio" name="question">
+              Female
+            </label>
+          </div>
         </div>
 
-        <div class="loginbox mb-4" style="margin:auto; width: 400px;">
-            <div class="field">
-                <label class="label">Id</label>
-                <div class="control">
-                    <input class="input" type="text" placeholder="Text input">
-                </div>
-            </div>
+        <div class="field has-addons">
+          <label class="label mr-4">Class</label>
+          <div class="control">
+            <label class="radio">
+              <input type="radio" name="question">
+              red
+            </label>
+            <label class="radio">
+              <input type="radio" name="question">
+              Blue
+            </label>
+            <label class="radio">
+              <input type="radio" name="question">
+              Green
+            </label>
+          </div>
+        </div>
               
-            <div class="field">
-                <label class="label">Password</label>
-                <div class="control">
-                    <input class="input" type="password" placeholder="Text input">
-                </div>
-            </div>
-            <div>
-                <button type="submit" class="button is-primary is-fullwidth mb-1">로그인</button>
-                <button class="button is-light is-fullwidth">회원가입</button>
-            </div>
+        <div class="field is-grouped has-addons has-addons-right">
+          <div class="control">
+            <button class="button is-link">Submit</button>
+          </div>
+          <div class="control">
+            <button class="button is-link is-light" onclick="closeJoin()">Cancel</button>
+          </div>
         </div>
-        <div class="notification mb-4" style="width:500px;margin:auto;text-align: center;">
-            <p>
-                <strong>바로지금 HOT 투표글</strong><br>
-                <a href="#">
-            학습 vs 실습 뭐가 먼저인가?
-            </a>
-        </p>
-        </div>
-        <div class="joinbox mb-4">
-            
-        </div>
+      </div>
     </div>
+  </div>
+</div>
+
+</div>
+</div>
 </body>
 </html>
