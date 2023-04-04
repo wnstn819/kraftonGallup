@@ -1,73 +1,323 @@
 <!DOCTYPE html>
-<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <html>
 <head>
-    <title>title</title>
-</head>
-<script>
-      $(document).ready(function () {
-        $.cookie('mytoken') ? getUsername() : window.location.replace("/");
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <!-- Use Bulma -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <!-- Use JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.3.js" 
+            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" 
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" 
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <title>크래프톤 정글 BLUE | Casting Vote</title>
+    <style>
+        .wrap {
+            margin: auto;
+            width: 1450px;
+        }
 
+        .mytitle {
+            color: black;
+            width: 1450px;
+            height: 100px;
+            /* background-image: url('https://www.ancient-origins.net/sites/default/files/field/image/Agesilaus-II-cover.jpg'); */
+            /* background-position: center; */
+            /* background-size: cover; */
+
+            border-radius: 10px;
+            text-align: center;
+            padding-top: 50px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $.cookie('mytoken') ? getUsername() : window.location.replace("/");
         });
-
-    // 토큰 관리
-     function getUsername(){
-            $.ajax({
-            type: "GET",
-            headers: {
-                'Authorization' : `Bearer ${$.cookie('mytoken')}`,
-            },
-            url: "/protected",
-            data: {},
-            success: (res) => {
-                console.log(res);
-                if (res['result'] == 'success') {
-                  
-                        
-                }else{
-                    window.location.replace("/")
-                }
-            }
-
-        })
-    }
-
-    // 게시글 조회
-
-
-    function find(){
-
-    }
-
-
-    function create(){
-        window.location.replace("/list/create")
-    }
-
-
-    // 로그아웃
-    function logout(){
-        $.removeCookie('mytoken')
-        window.location.replace("/")
-    }
   
-
-        
-</script>
+      // 토큰 관리
+       function getUsername(){
+            $.ajax({
+              type: "GET",
+              headers: {
+                  'Authorization' : `Bearer ${$.cookie('mytoken')}`,
+              },
+              url: "/protected",
+              data: {},
+              success: (res) => {
+                  console.log(res);
+                  if (res['result'] == 'success') {
+                    
+                          
+                  }else{
+                      window.location.replace("/")
+                  }
+              }
+              
+            })
+        }   
+  
+      // 게시글 조회
+  
+  
+      function find(){
+  
+      }
+  
+  
+      function create(){
+          window.location.replace("/list/create")
+      }
+  
+  
+      // 로그아웃
+      function logout(){
+          $.removeCookie('mytoken')
+          window.location.replace("/")
+      }
+    
+  
+          
+  </script>
+</head>
 <body>
-
-    Hello! list
-    <input type="submit" value="로그아웃" onclick="logout()" />
-    <input type="submit" value="새글작성" onclick="create()"/>
-
-</body>
-
-
-
-    
-    
-
-
+    <div class="wrap">
+        <div class="mytitle mb-6">
+            <h1 class="title is-1">Casting Vote</h1>
+        </div>
+ 
+        <div class="columns">
+            <div class="column">
+                <div id="list-box" style="margin:autho;width:700px;">
+                    <div class="columns">
+                        <div class="column is-one-fifth">
+                            <div class="select">
+                                <select>
+                                  <option>최신순</option>
+                                  <option>인기순</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="column is-one-fifth">
+                            <div class="button is-info">New Vote</div>
+                        </div>
+                        <div class="column auto"></div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1 has-background-light has-text-weight-semibold is-size-6">No</div>
+                        <div class="column is-7 has-background-light has-text-weight-semibold is-size-6">Title</div>
+                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
+                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">First Now</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">13</div>
+                        <div class="column is-7">점심 메뉴 추천해주세요</div>
+                        <div class="column is-2">홍길동</div>
+                        <div class="column is-2">분식</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-full">
+                            <div class="buttons has-addons is-centered">
+                                <button class="button is-info is-selected">1</button>
+                                <button class="button">2</button>
+                                <button class="button">3</button>
+                                <button class="button">4</button>
+                                <button class="button">5</button>
+                                <button class="button">6</button>
+                                <button class="button">7</button>
+                                <button class="button">8</button>
+                                <button class="button">9</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-narrow">
+            </div>
+            <div class="column">
+                <div id="list-box1" style="margin:autho;width:700px;">
+                    <div class="columns">
+                        <div class="column auto"></div>
+                        <div class="column is-one-fifth">
+                            <div class="select">
+                                <select>
+                                  <option>최신순</option>
+                                  <option>인기순</option>
+                                </select>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1 has-background-light has-text-weight-semibold is-size-6">No</div>
+                        <div class="column is-7 has-background-light has-text-weight-semibold is-size-6">Title</div>
+                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
+                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">First Now</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">13</div>
+                        <div class="column is-7">점심 메뉴 추천해주세요</div>
+                        <div class="column is-2">홍길동</div>
+                        <div class="column is-2">분식</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-full">
+                            <div class="buttons has-addons is-centered">
+                                <button class="button is-info is-selected">1</button>
+                                <button class="button">2</button>
+                                <button class="button">3</button>
+                                <button class="button">4</button>
+                                <button class="button">5</button>
+                                <button class="button">6</button>
+                                <button class="button">7</button>
+                                <button class="button">8</button>
+                                <button class="button">9</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="columns">
+                <div class="column">
+                  <p class="bd-notification has-background-grey">First column</p>
+                  <div class="columns is-mobile">
+                    <div class="column">
+                      <p class="bd-notification is-info">First nested column</p>
+                    </div>
+                    <div class="column">
+                      <p class="bd-notification is-info">Second nested column</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <p class="bd-notification is-danger">Second column</p>
+                  <div class="columns is-mobile">
+                    <div class="column is-half">
+                      <p class="bd-notification is-danger">50%</p>
+                    </div>
+                    <div class="column">
+                      <p class="bd-notification is-danger">Auto</p>
+                    </div>
+                    <div class="column">
+                      <p class="bd-notification is-danger">Auto</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div> -->
+    </div>
 </body>
 </html>
