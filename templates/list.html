@@ -7,9 +7,11 @@
 </head>
 <script>
       $(document).ready(function () {
-            getUsername();
+        $.cookie('mytoken') ? getUsername() : window.location.replace("/");
 
         });
+
+    // 토큰 관리
      function getUsername(){
             $.ajax({
             type: "GET",
@@ -24,11 +26,30 @@
                   
                         
                 }else{
-                    console.log("fail");
+                    window.location.replace("/")
                 }
             }
 
         })
+    }
+
+    // 게시글 조회
+
+
+    function find(){
+
+    }
+
+
+    function create(){
+        window.location.replace("/list/create")
+    }
+
+
+    // 로그아웃
+    function logout(){
+        $.removeCookie('mytoken')
+        window.location.replace("/")
     }
   
 
@@ -38,6 +59,7 @@
 
     Hello! list
     <input type="submit" value="로그아웃" onclick="logout()" />
+    <input type="submit" value="새글작성" onclick="create()"/>
 
 </body>
 
