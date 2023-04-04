@@ -39,15 +39,16 @@ def home():
 
 @app.route('/home/login', methods=['POST'])
 def login():  
-   username = request.form['username']
+   id = request.form['id']
+   print(id)
    password = request.form['password']
-   user_from_db = users_collection.find_one({'username': username})
+   user_from_db = users_collection.find_one({'id': id})
    if user_from_db:
         encrpted_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
-        if encrpted_password == user_from_db['password']:
-             access_token = create_access_token({"identity":user_from_db['username'],"password":password})
+        if encrpted_password == user_from_db['token']:
+             access_token = create_access_token({"identity":user_from_db['id'],"password":password})
              print("토큰 생성 테스트")
-             print(access_token)
+            #print(access_token)
              return jsonify({'token':access_token,'result':'success'}), 200
    return jsonify({'msg' : 'The username or password is incorrect'}), 401
 
@@ -57,17 +58,25 @@ def login():
 
 @app.route('/join/add', methods=['POST'])
 def register():
-     new_user_name = request.form['username']
+     new_user_name = request.form['name']
+     new_user_id = request.form['id']
      new_user_pw= request.form['password']
-     
-     new_user_pw = hashlib.sha256(new_user_pw.encode("utf-8")).hexdigest() # encrpt password
+     new_user_age= request.form['age']
+     new_user_gender = request.form['gender']
+     new_user_room = request.form['room']
+
+     token = hashlib.sha256(new_user_pw.encode("utf-8")).hexdigest() # encrpt password
      doc = users_collection.find_one({"username": new_user_name})
      seq = db.userCounters.find({})[0]['seq']
      new_user ={
          '_id': seq,
-         'username' : new_user_name,
-         'password' : request.form['password'],
-         'token' : new_user_pw
+         'id' : new_user_id,
+         'password' : new_user_pw,
+         'name' : new_user_name,
+         'age' : new_user_age, 
+         'gender' : new_user_gender,
+         'room' : new_user_room,
+         'token' : token
      }
      if not doc:
           users_collection.insert_one(new_user)
