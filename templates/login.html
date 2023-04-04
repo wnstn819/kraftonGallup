@@ -35,6 +35,7 @@
 
     </style>
     <script>
+      let doubleCheckBoolean = false;
        $(document).ready(function () {
             $.cookie('mytoken') && getUsername();
 
@@ -61,8 +62,6 @@
     }
 
        function joinAdd() {
-        console.log("제출 클릭");
-
         var id = $('#join-id').val();
         var pw = $('#join-pw').val();
         var name = $("#join-name").val()
@@ -71,27 +70,25 @@
         var room = $("input[name=class]:checked").val()
             
 
-        $.ajax({
+        doubleCheckBoolean ? $.ajax({
             type: "POST",
             url: "/join/add",
             data: { "id": id, "password" : pw , "name": name, "age" : age, "gender": gender, "room" : room},
             success: (res) => {
                 console.log(res);
                 if (res['result'] == 'success') {
-                    for(a in res){
-                        console.log(a);
-                    }
-                        
+                  alert("생성되었습니다!.") 
+                  closeJoin();                       
                 }else{
-                    console.log("fail");
+                  console.log("fail");
                 }
             }
 
-        })
+        }) : alert("ID 중복체크 먼저 해주시기 바랍니다.")
 
         }
 
-
+        // 로그인
         function login() {
         console.log("제출 클릭");
 
@@ -109,18 +106,44 @@
                     window.location.replace("/list")
                         
                 }else{
-                    console.log("fail");
+                    alert("ID와 Password를 확인 해주세요!")
                 }
             }
 
         })
+        }
 
+        //중복체크
+        function doubleCheck(){
+          var id = $('#join-id').val();
+          $.ajax({
+            type: "POST",
+            url:  "/join/double",
+            data: {"id":id},
+            success:(res)=>{
+              if(res['result'] == 'success'){
+                alert(res['msg'])
+                doubleCheckBoolean = true
+              }else{
+                alert(res['msg'])
+                doubleCheckBoolean = false
+              }
+            }
+          })
+            
+        }
+        function changeCheck(){
+          doubleCheckBoolean = false
         }
        
         function openJoin() {
             $('#join-box').show()
         }
         function closeJoin() {
+            $('#join-id').val("")
+            $('#join-pw').val("")
+            $("#join-name").val("")
+            $("#join-age").val("")
             $('#join-box').hide()
         }
     </script>
@@ -164,10 +187,10 @@
         <label class="label">ID</label>
         <div class="field has-addons ">
           <div class="control is-expanded ">
-            <input id="join-id" class="input" type="text" placeholder="input ID">
+            <input id="join-id" class="input" type="text" placeholder="input ID" oninput="changeCheck()">
           </div>
           <div class="control">
-            <a class="button">double check</a>
+            <a class="button" onclick="doubleCheck()">double check</a>
           </div>
         </div>
     

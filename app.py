@@ -50,7 +50,7 @@ def login():
              print("토큰 생성 테스트")
             #print(access_token)
              return jsonify({'token':access_token,'result':'success'}), 200
-   return jsonify({'msg' : 'The username or password is incorrect'}), 401
+   return jsonify({'msg' : 'The username or password is incorrect','result' : 'fail'})
 
     
 
@@ -84,6 +84,18 @@ def register():
           return jsonify({'msg' : 'User created successfully', 'result': 'success'}) , 201
      else:
           return jsonify({'msg' : 'Username already exists'}),409
+     
+
+   
+@app.route('/join/double', methods=['POST'])
+def dobuleChekc():
+    id = request.form['id']
+    doc = users_collection.find_one({"id": id})
+    if not doc:
+        return jsonify({'msg': "사용 가능한 ID입니다.",'result':'success'})
+    else:
+        return jsonify({'msg': "중복된 ID입니다.", 'reuslt':'fail'})
+
 
 
 
@@ -127,22 +139,18 @@ def add_contents():
    room = request.form['room']
    voteContents = request.form['voteContents']
 
-   print("---------")
-   print(multi)
-   print(details)
-
-   print("---------@@@@@@@@@@@@@@@@")
+   seq = db.userCounters.find({})[0]['seq']
    new_contents = {
+       "_id":seq,
        "title": title,
        "details" : details,
        "multi" : multi,
        "room" : room,
        "voteContents" : voteContents
    }
-   print("------")
-   print(new_contents)
-   print("------")
+
    list_collection.insert_one(new_contents)
+   db.listCounters.update_one({'seq': seq},{'$set':{'seq' : (seq+1)}})
    return 'This is My Page!'
 
 
