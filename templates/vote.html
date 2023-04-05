@@ -25,10 +25,6 @@
             color: black;
             width: 600px;
             height: 100px;
-            /* background-image: url('https://www.ancient-origins.net/sites/default/files/field/image/Agesilaus-II-cover.jpg'); */
-            /* background-position: center; */
-            /* background-size: cover; */
-
             border-radius: 10px;
             text-align: center;
             padding-top: 50px;
@@ -36,19 +32,17 @@
     </style>
     <script>
         let checkVote;
-          $(document).ready(function () {
+        $(document).ready(function () {
             getUsername();
 
             var room = $("input[name=class]:checked").val()
-            console.log(room);
-            console.log($.cookie('room'));
-            if(room == "ALL") {
+            if (room == "ALL") {
                 $("input[name=option]").attr("disabled", false);
-            }else if(room != $.cookie('room')){
+            } else if (room != $.cookie('room')) {
                 $("input[name=option]").attr("disabled", true);
-                $("#vote").attr("disabled",true);
+                $("#vote").addClass("is-dark").removeClass("is-link").attr("disabled", true);
             }
-            
+
 
         });
 
@@ -61,7 +55,6 @@
                 url: "/protected",
                 data: {},
                 success: (res) => {
-                    console.log(res);
                     if (res['result'] == 'success') {
                         userId = res['logged_in_as']['identity']
                     } else {
@@ -72,41 +65,39 @@
             })
         }
 
-   
 
-        function vote(id){
-            
+
+        function vote(id) {
+
             var id = id;
             var select = $('input[name=option]:checked').val()
 
             $.ajax({
-              type: "GET",
-              headers: {
-                  'Authorization' : `Bearer ${$.cookie('mytoken')}`,
-              },
-              url: "/protected",
-              data: {},
-              success: (res) => {
-                  
-                  console.log("getUserName : " ,res['logged_in_as']['identity']);
-                  checkVote = res['logged_in_as']['room']
-                  if (res['result'] == 'success') {
-                    $.ajax({
-                    type:"POST",
-                    url:"/list/vote/update",
-                    data:{"id":id, "select" : select, "userId": res['logged_in_as']['identity']},
-                    success:(res)=>{
-                        window.location.reload()
-                    }
-                     })
+                type: "GET",
+                headers: {
+                    'Authorization': `Bearer ${$.cookie('mytoken')}`,
+                },
+                url: "/protected",
+                data: {},
+                success: (res) => {
+                    checkVote = res['logged_in_as']['room']
+                    if (res['result'] == 'success') {
+                        $.ajax({
+                            type: "POST",
+                            url: "/list/vote/update",
+                            data: { "id": id, "select": select, "userId": res['logged_in_as']['identity'] },
+                            success: (res) => {
+                                window.location.reload()
+                            }
+                        })
                     }
                 }
             })
         }
-    
-       
 
-    
+
+
+
     </script>
 </head>
 
@@ -118,35 +109,28 @@
         </div>
 
         <div id="vote-box" class="box mb-4" style="width:600px; margin:auto;">
-            <!-- <div class="columns"> -->
-            <!-- <div class="column"> -->
-
             <div class="field">
                 <label class="label is-size-4">Title</label>
                 <div class="control">
                     <div class="block ml-2">{{data["title"]}}</div>
-                    <!-- <input class="input" type="text" placeholder="input Title" value="title sample" readonly> -->
                 </div>
-            </div><!-- /title -->
+            </div>
 
             <div class="field">
                 <label class="label is-size-4">Detail</label>
                 <div class="control">
                     <div class="block ml-2">{{data["details"]}}</div>
-                    <!-- <textarea   class="textarea" placeholder="detail contents" rows="2" readonly>detaile sample</textarea> -->
                 </div>
-            </div><!-- /Detale -->
+            </div>
             <label class="label is-size-4">Vote</label>
 
             <div id="vote-setting" class="ml-5">
                 <div class="field has-addons">
                     <label class="label mr-5">만료 일자</label>
                     <div class="control">
-                        <input disabled value={{data["expired"]}}/>
-
-
+                        <input disabled value={{data["expired"]}} />
                     </div>
-                </div><!-- /Multi -->
+                </div>
 
                 <div class="field has-addons">
                     <label class="label mr-5">클래스 제약</label>
@@ -163,10 +147,10 @@
                         </label>
                         <label class="radio">
                             {% if data["room"] == '블루' %}
-                            <input type="radio" name="class"  value="블루" disabled checked>
+                            <input type="radio" name="class" value="블루" disabled checked>
                             블루
                             {% else %}
-                            <input type="radio" name="class" value="블루"disabled>
+                            <input type="radio" name="class" value="블루" disabled>
                             블루
                             {% endif %}
                         </label>
@@ -189,11 +173,11 @@
                             {% endif %}
                         </label>
                     </div>
-                </div><!-- /Class -->
+                </div>
                 <label class="label">세부항목</label>
 
                 <div id="vote-option" class="m-5">
-                    
+
                     {% for key,value in data['voteContents'].items() %}
                     <div class="field has-addons">
                         <label class="label mr-5 has-text-justified">{{loop.index}}</label>
@@ -203,46 +187,27 @@
                         <div class="control">
                             <div class="button" disabled>{{value|length}}</div>
                             <div class="button">
-                                
+
                                 <input type="radio" name="option" value={{key}}>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
 
-                    <!-- <div class="field has-addons">
-                        <label class="label mr-5">2</label>
-                        <div class="control is-expanded">
-                            <input class="input" type="text" value="option 2" disabled>
-                        </div>
-                        <div class="control">
-                            <div class="button" disabled>7</div>
-                            <div class="button">
-                                <input type="radio" name="option">
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <!-- 추가 버튼 -->
-                    <!-- <div class="field is-grouped has-addons has-addons-centered">
-                                <div class="button">+</div>
-                            </div> --> <!-- /추가 버튼 -->
-                </div><!-- /Vote Option -->
-            </div><!-- /Vote Setting -->
-            <!-- </div> -->
-            <!-- /Column -->
-            <!-- </div> -->
-            <!-- /Columns -->
-
+                </div>
+            </div>
             <div class="columns">
                 <div class="column is-full">
                     <div class="field">
-                        <div class="buttons  is-centered">
+                        <div class="buttons is-centered">
                             <div class="control">
-                                <button id="vote" class="button is-info" onclick="vote({{data['_id']}})">투표하기</button>
+                                {%if data["vaild"] == '1' %}
+                                <button id="vote" class="button is-link" onclick="vote({{data['_id']}})">투표하기</button>
+                                {% endif %}
                             </div>
                             <div class="control">
-                                <button class="button is-info is-light" onclick="window.history.go(-1)">목록으로</button>
+                                <button class="button is-link is-light"
+                                    onclick="window.history.go(-1)">목록으로{{vaild}}</button>
                             </div>
                         </div>
                     </div>

@@ -36,7 +36,6 @@
     </style>
     <script>
         window.addEventListener('focus', function () {
-            console.log('사용자가 웹페이지에 돌아왔습니다.');
             find();
         }, false);
 
@@ -49,40 +48,38 @@
         let sort = "date";
 
         // for pagination
-        
+
 
         // 토큰 관리
         function getUsername() {
             $.ajax({
-              type: "GET",
-              headers: {
-                  'Authorization' : `Bearer ${$.cookie('mytoken')}`,
-              },
-              url: "/protected",
-              data: {},
-              success: (res) => {
-                  console.log("getUserName : " ,res);
-                  if (res['result'] == 'success') {
-                    
-                          
-                  }else{
-                      window.location.replace("/")
-                  }
-              }
-              
+                type: "GET",
+                headers: {
+                    'Authorization': `Bearer ${$.cookie('mytoken')}`,
+                },
+                url: "/protected",
+                data: {},
+                success: (res) => {
+                    if (res['result'] == 'success') {
+
+                    } else {
+                        window.location.replace("/")
+                    }
+                }
+
             })
         }
 
-  
-      // 로그아웃
-      function logout(){
-          $.removeCookie('mytoken')
-          $.removeCookie('room')
-          window.location.href ="/"
-      }
+
+        // 로그아웃
+        function logout() {
+            $.removeCookie('mytoken')
+            $.removeCookie('room')
+            window.location.href = "/"
+        }
 
 
-      const changeSort = (target) => {
+        const changeSort = (target) => {
             sort = target.value
             find()
 
@@ -102,7 +99,7 @@
         <!-- 정렬&버튼 row -->
         <div class="columns">
             <div class="column is-1">
-                <div class="button is-info" onclick="window.location.href='/list/create'">New Vote</div>
+                <div class="button is-link" onclick="window.location.href='/list/create'">New Vote</div>
             </div>
 
             <div class="column is-10"></div>
@@ -116,4 +113,5 @@
         </div>
     </div>
 </body>
+
 </html>

@@ -14,8 +14,6 @@ list_collection = db["list"]
 
 
 
-
-
 app = Flask(__name__)
 ################################## 로그인 페이지 ##################################
 
@@ -42,7 +40,6 @@ def home():
 @app.route('/home/login', methods=['POST'])
 def login():  
    id = request.form['id']
-   print(id)
    password = request.form['password']
    user_from_db = users_collection.find_one({'id': id})
    room = user_from_db['room']
@@ -52,8 +49,6 @@ def login():
         encrpted_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
         if encrpted_password == user_from_db['token']:
              access_token = create_access_token({"identity":user_from_db['id'],"password":password, "room":room})
-             print("토큰 생성 테스트")
-            #print(access_token)
              return jsonify({'token':access_token, 'room':room,'result':'success'}), 200
    return jsonify({'msg' : 'The username or password is incorrect','result' : 'fail'})
 
@@ -140,8 +135,7 @@ def list_main():
         'block_start' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1,
         'block_end' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1 + (5 - 1)
     }
-    print(list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]).skip((request.args.get("page", 1, type=int) - 1) * 10).limit(10)))
-    print(list(db.list.find({'vaild':'0'}).sort([(sort,-1), ('date',-1)]).skip((request.args.get("page", 1, type=int) - 1) * 10).limit(10)))
+
     return render_template(
             'table.html', 
             valid_list_data=valid_list_data,
@@ -158,7 +152,6 @@ def get_list():
 ################################## 새글 생성 ##################################
 @app.route('/list/create')
 def contents():  
-   # token_receive = request.cookies.get('mytoken')
    return render_template('create.html', a="list")
 
 @app.route('/list/create/post', methods=["POST"])
@@ -186,8 +179,6 @@ def add_contents():
        "vaild" : vaild,
    }
 
- 
-
    list_collection.insert_one(new_contents)
    db.listCounters.update_one({'seq': seq},{'$set':{'seq' : (seq+1)}})
    return jsonify({'msg':'등록되었습니다.','result': 'success'})
@@ -198,11 +189,9 @@ def add_contents():
 def vote(number):  
    result = list(db.list.find({'_id':int(number)}))
    
-   print(result[0]['voteContents'])
-   
    for i in json.loads(result[0]['voteContents']) :
        print(json.loads(result[0]['voteContents'])[i])
-  
+
    parse = {
        '_id' : result[0]['_id'],
        'title' : result[0]['title'],
@@ -213,24 +202,19 @@ def vote(number):
        'date' : result[0]['date'],
        'createId' : result[0]['createId'],
        'vaild' : result[0]['vaild'],
-       
     } 
-   
-
    
    return render_template('vote.html', data=parse)
 
 @app.route('/list/vote/detail', methods=["POST"])
 def voteDetails():
       id = request.form['id']
-      print(id + "ddddddid")
       result = list(db.list.find({'_id':int(id)}))
       return jsonify({'result':'success', 'details':result})
 
 @app.route('/list/vote/update', methods=["POST"])
 def vote_update():
-    #투표하려면 필요 한 것 투표 id, user id, 투표항목
-   
+    #투표 적용하려면 필요한 값 : 투표 id, user id(투표자), 투표항목 
     id = request.form['id']
     select = request.form['select']
     userId = request.form['userId']
@@ -248,13 +232,11 @@ def vote_update():
             if userId in parse[key]:
                 value = parse[key]
                 value.remove(userId)
-                parse.update({key :value})
-   
+                parse.update({key :value}) 
 
     parse = json.dumps(parse)
     db.list.update_one({'_id' :int(id)} ,{'$set':{ 'voteContents': str(parse)}})
     return jsonify({"result": "success"})
-
 
 
 if __name__ == '__main__':  

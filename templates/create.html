@@ -25,10 +25,6 @@
             color: black;
             width: 600px;
             height: 100px;
-            /* background-image: url('https://www.ancient-origins.net/sites/default/files/field/image/Agesilaus-II-cover.jpg'); */
-            /* background-position: center; */
-            /* background-size: cover; */
-
             border-radius: 10px;
             text-align: center;
             padding-top: 50px;
@@ -51,7 +47,6 @@
                 url: "/protected",
                 data: {},
                 success: (res) => {
-                    console.log(res);
                     if (res['result'] == 'success') {
                         userId = res['logged_in_as']['identity']
                     } else {
@@ -62,10 +57,10 @@
             })
         }
 
-        function addOption(){
+        function addOption() {
             cnt++;
-            let addedOption = 
-            `
+            let addedOption =
+                `
                         <div class="field has-addons added-option-${cnt}">
                             <label class="label mr-5">-</label>
                             <div class="control is-expanded">
@@ -79,22 +74,13 @@
             $('#vote-option').append(addedOption)
         }
 
-        function removeOption(){
-            if(cnt > 2){
+        function removeOption() {
+            if (cnt > 2) {
                 const targetClass = '.added-option-' + cnt;
-                console.log(targetClass);
                 $(targetClass).remove();
                 cnt--;
-                console.log(cnt);
             }
         }
-
-
-        function minusCount(){
-            cnt--;
-            console.log(cnt);
-        }
-
 
         function create() {
             var title = $("#title").val()
@@ -112,14 +98,10 @@
                 url: "/list/create/post",
                 data: { "title": title, "details": details, "room": room, "expired": expired, "voteContents": JSON.stringify(parse), "createId": userId, "valid": 1 },
                 success: (res) => {
-                    console.log(res);
-                    console.log(res['result']);
                     if (res['result'] == 'success') {
                         alert('등록되었습니다.')
                         window.location.href = "/list"
-                    } else {
-                        console.log("fail");
-                    }
+                    } 
                 }
             })
         }
@@ -163,22 +145,6 @@
                         <input id="expired" class="input is-small" type="text" placeholder="yyyy-MM-dd">
                     </div>
                 </div>
-                <!-- Multi -->
-                <!-- <div class="field has-addons">
-                    <label class="label mr-5">중복 제약</label>
-                    <div class="control">
-                        <label class="radio">
-                            <input type="radio" name="multi" value="True" checked>
-                            가능
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="multi" value="False">
-                            불가능
-                        </label>
-                    </div>
-                </div> -->
-                <!-- /Multi -->
-
                 <div class="field has-addons">
                     <label class="label mr-5">클래스 제약</label>
                     <div class="control">
@@ -227,18 +193,18 @@
                 </div><!-- /Vote Option Box -->
             </div><!-- /Vote Setting -->
             <div class="field has-addons has-addons-centered">
-                <div class="button" onclick="addOption()">+</div>
-                <div class="button" onclick="removeOption()">-</div>
+                <div class="button is-rounded is-link is-light" onclick="addOption()">+</div>
+                <div class="button is-rounded is-light" onclick="removeOption()">-</div>
             </div>
             <div class="columns mt-5">
                 <div class="column is-full">
                     <div class="field">
                         <div class="buttons  is-centered">
                             <div class="control">
-                                <button class="button is-info" onclick="create()">등록하기</button>
+                                <button class="button is-link" onclick="create()">등록하기</button>
                             </div>
                             <div class="control">
-                                <button class="button is-info is-light" onclick="back()">목록으로</button>
+                                <button class="button is-link is-light" onclick="back()">목록으로</button>
                             </div>
                         </div>
                     </div>

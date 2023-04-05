@@ -1,108 +1,107 @@
 {% extends 'list.html' %}
 {% block table %}
-            <!-- 진행중 투표 col, valid_list_data -->
-            <div class="column">
-                <div id="list-box1" style="margin:autho;width:700px;">
-                    <div class="columns">
-                        <div class="column is-1 has-background-light has-text-weight-semibold is-size-6">No</div>
-                        <div class="column is-7 has-background-light has-text-weight-semibold is-size-6">Title</div>
-                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
-                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Date</div>
-                    </div>
+<!-- 진행중 투표 col, valid_list_data -->
+<div class="column">
+    <div id="list-box1" style="margin:autho;width:700px;">
+        <div class="columns">
+            <div class="column is-1 has-background-light has-text-weight-semibold is-size-6">No</div>
+            <div class="column is-7 has-background-light has-text-weight-semibold is-size-6">Title</div>
+            <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
+            <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Date</div>
+        </div>
 
-                    {% if valid_list_data["datas"]|length > 0 %}
-                    {% for vote in valid_list_data["datas"] %}
-                    <div class="columns" onclick="window.location.href='/list/vote/{{vote["_id"]}}'">
-                        <div class="column is-1">{{vote["_id"]}}</div>
-                        <div class="column is-7" >{{vote["title"]}}</div>
-                        <div class="column is-2">{{vote["createId"]}}</div>
-                        <div class="column is-2">{{vote["date"]}}</div>
-                    </div>
-                    {% endfor%}
+        {% if valid_list_data["datas"]|length > 0 %}
+        {% for vote in valid_list_data["datas"] %}
+        <div class="columns" onclick="window.location.href='/list/vote/{{vote[" _id"]}}'">
+            <div class="column is-1">{{vote["_id"]}}</div>
+            <div class="column is-7">{{vote["title"]}}</div>
+            <div class="column is-2">{{vote["createId"]}}</div>
+            <div class="column is-2">{{vote["date"]}}</div>
+        </div>
+        {% endfor%}
+        {% else %}
+        <div class="columns no-data">
+            <div class="column is-full"><b>등록된 데이터가 없습니다.</b></div>
+        </div>
+        {% endif%}
+
+        <!-- 페이지네이션-->
+        <div class="columns">
+            <div class="column is-full">
+                <div class="buttons has-addons is-centered">
+
+                    {% if valid_list_data["block_start"] - 1 > 0 %}
+                    <a class="button">이전</a>
+                    {% endif %}
+                    {% for i in range(valid_list_data["block_start"], valid_list_data["block_end"] + 1)%}
+                    {% if i > valid_list_data["last_page_num"] %}
                     {% else %}
-                    <div class="columns no-data">
-                        <div class="column is-full"><b>등록된 데이터가 없습니다.</b></div>
-                    </div>
-                    {% endif%}
-
-                    <!-- 페이지네이션-->
-                    <div class="columns">
-                        <div class="column is-full">
-                            <div class="buttons has-addons is-centered">
-                                
-                                {% if valid_list_data["block_start"] - 1 > 0 %}
-                                    <a class="button">이전</a>
-                                {% endif %}
-                                {% for i in range(valid_list_data["block_start"], valid_list_data["block_end"] + 1)%}
-                                    {% if i > valid_list_data["last_page_num"] %}
-                                    {% else %}
-                                        {% if i == valid_list_data["page"] %}
-                                            <a class="button is-info is-selected">{{i}}</a>
-                                        {% else %}
-                                            <a class="button" href="{{url_for('list_main', page=i)}}">{{i}}</a>
-                                        {% endif %}
-                                    {% endif %}
-                                {% endfor %}
-                                {% if valid_list_data["block_end"] < valid_list_data["last_page_num"] %}
-                                    <a class="button">다음</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div> 
+                    {% if i == valid_list_data["page"] %}
+                    <a class="button is-link is-hovered">{{i}}</a>
+                    {% else %}
+                    <a class="button is-link is-light" href="{{url_for('list_main', page=i)}}">{{i}}</a>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    {% if valid_list_data["block_end"] < valid_list_data["last_page_num"] %} <a class="button">다음</a>
+                        {% endif %}
                 </div>
             </div>
-            <!-- 구분 col -->
-            <div class="column is-narrow">
-            </div>
-            <!-- 만료 투표 col, invalid_list_data -->
-            <div class="column">
-                <div id="list-box1" style="margin:autho;width:700px;">
-                    <div class="columns">
-                        <div class="column is-1 has-background-light has-text-weight-semibold is-size-6">No</div>
-                        <div class="column is-7 has-background-light has-text-weight-semibold is-size-6">Title</div>
-                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
-                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Date</div>
-                    </div>
+        </div>
+    </div>
+</div>
+<!-- 구분 col -->
+<div class="column is-narrow">
+</div>
+<!-- 만료 투표 col, invalid_list_data -->
+<div class="column">
+    <div id="list-box1" style="margin:autho;width:700px;">
+        <div class="columns">
+            <div class="column is-1 has-background-light has-text-weight-semibold is-size-6">No</div>
+            <div class="column is-7 has-background-light has-text-weight-semibold is-size-6">Title</div>
+            <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
+            <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Date</div>
+        </div>
 
-                    {% if invalid_list_data["datas"]|length > 0 %}
-                    {% for vote in invalid_list_data["datas"] %}
-                    <div class="columns" onclick="window.location.href='/list/vote/{{vote["_id"]}}'">
-                        <div class="column is-1">{{vote["_id"]}}</div>
-                        <div class="column is-7" >{{vote["title"]}}</div>
-                        <div class="column is-2">{{vote["createId"]}}</div>
-                        <div class="column is-2">{{vote["date"]}}</div>
-                    </div>
-                    {% endfor%}
+        {% if invalid_list_data["datas"]|length > 0 %}
+        {% for vote in invalid_list_data["datas"] %}
+        <div class="columns" onclick="window.location.href='/list/vote/{{vote[" _id"]}}'">
+            <div class="column is-1">{{vote["_id"]}}</div>
+            <div class="column is-7">{{vote["title"]}}</div>
+            <div class="column is-2">{{vote["createId"]}}</div>
+            <div class="column is-2">{{vote["date"]}}</div>
+        </div>
+        {% endfor%}
+        {% else %}
+        <div class="columns no-data">
+            <div class="column is-full"><b>등록된 데이터가 없습니다.</b></div>
+        </div>
+        {% endif%}
+
+        <!-- 페이지네이션-->
+        <div class="columns">
+            <div class="column is-full">
+                <div class="buttons has-addons is-centered">
+
+                    {% if invalid_list_data["block_start"] - 1 > 0 %}
+                    <a class="button">이전</a>
+                    {% endif %}
+                    {% for i in range(invalid_list_data["block_start"], invalid_list_data["block_end"] + 1)%}
+                    {% if i > invalid_list_data["last_page_num"] %}
                     {% else %}
-                    <div class="columns no-data">
-                        <div class="column is-full"><b>등록된 데이터가 없습니다.</b></div>
-                    </div>
-                    {% endif%}
-
-                    <!-- 페이지네이션-->
-                    <div class="columns">
-                        <div class="column is-full">
-                            <div class="buttons has-addons is-centered">
-                                
-                                {% if invalid_list_data["block_start"] - 1 > 0 %}
-                                    <a class="button">이전</a>
-                                {% endif %}
-                                {% for i in range(invalid_list_data["block_start"], invalid_list_data["block_end"] + 1)%}
-                                    {% if i > invalid_list_data["last_page_num"] %}
-                                    {% else %}
-                                        {% if i == invalid_list_data["page"] %}
-                                            <a class="button is-info is-selected">{{i}}</a>
-                                        {% else %}
-                                            <a class="button" href="{{url_for('list_main', page=i)}}">{{i}}</a>
-                                        {% endif %}
-                                    {% endif %}
-                                {% endfor %}
-                                {% if invalid_list_data["block_end"] < invalid_list_data["last_page_num"] %}
-                                    <a class="button">다음</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div> 
+                    {% if i == invalid_list_data["page"] %}
+                    <a class="button is-link is-hovered">{{i}}</a>
+                    {% else %}
+                    <a class="button is-link is-light" href="{{url_for('list_main', page=i)}}">{{i}}</a>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    {% if invalid_list_data["block_end"] < invalid_list_data["last_page_num"] %} <a class="button">
+                        다음</a>
+                        {% endif %}
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

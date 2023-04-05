@@ -44,11 +44,11 @@
     $(document).ready(function () {
       listGet()
       $.cookie('mytoken') && getUsername();
-      
+
 
     });
-    function getDB(){
-      
+    function getDB() {
+
     }
 
     function getUsername() {
@@ -60,14 +60,9 @@
         url: "/protected",
         data: {},
         success: (res) => {
-          console.log(res);
           if (res['result'] == 'success') {
-            // window.location.href="/list"
-            window.location.href="{{url_for('list_main',page=1)}}"
-          } else {
-            console.log("fail");
-          }
-        }
+            window.location.href = "{{url_for('list_main',page=1)}}"
+          } 
 
       })
     }
@@ -86,13 +81,10 @@
         url: "/join/add",
         data: { "id": id, "password": pw, "name": name, "age": age, "gender": gender, "room": room },
         success: (res) => {
-          console.log(res);
           if (res['result'] == 'success') {
             alert("생성되었습니다!.")
             closeJoin();
-          } else {
-            console.log("fail");
-          }
+          } 
         }
 
       }) : alert("ID 중복체크 먼저 해주시기 바랍니다.")
@@ -101,8 +93,6 @@
 
     // 로그인
     function login() {
-      console.log("제출 클릭");
-
       let id = $('#login-id').val();
       let pw = $('#login-pw').val();
 
@@ -111,11 +101,10 @@
         url: "/home/login",
         data: { "id": id, "password": pw },
         success: (res) => {
-          console.log(res);
           if (res['result'] == 'success') {
             $.cookie('mytoken', res['token'], { path: '/' });
-            $.cookie('room', res['room'],{path:'/'})
-            window.location.href ="/list"
+            $.cookie('room', res['room'], { path: '/' })
+            window.location.href = "/list"
 
           } else {
             alert("ID와 Password를 확인 해주세요!")
@@ -125,14 +114,13 @@
       })
     }
 
-    function listGet(){
-       $.ajax({
-        type:"GET",
-        url:"/list/get",
-        data:{},
-        success:(res)=>{
-          if(res['result'] == 'success'){
-            console.log(res['list']);
+    function listGet() {
+      $.ajax({
+        type: "GET",
+        url: "/list/get",
+        data: {},
+        success: (res) => {
+          if (res['result'] == 'success') {
             $('#new').empty()
             let temp = `
             <p>
@@ -141,10 +129,10 @@
             </p>`
             $('#new').append(temp)
           }
-          
-          
+
+
         }
-       })
+      })
     }
 
     //중복체크
@@ -220,8 +208,8 @@
         </div>
       </div>
       <div>
-        <button type="submit" class="button is-primary is-fullwidth mb-1" onclick="login()">Login</button>
-        <button class="button is-light is-fullwidth" onclick="openJoin()">Join</button>
+        <button type="submit" class="button is-link is-fullwidth mb-1" onclick="login()">Login</button>
+        <button class="button is-link is-light is-fullwidth" onclick="openJoin()">Join</button>
       </div>
     </div>
     <div id="new" class="notification mb-6" style="width:500px;margin:auto;text-align: center;">
@@ -312,7 +300,7 @@
               <button class="button is-link" onclick="joinAdd()">Submit</button>
             </div>
             <div class="control">
-              <button class="button is-link is-light" onclick="closeJoin()">Cancel</button>
+              <button class="button is-light" onclick="closeJoin()">Cancel</button>
             </div>
           </div>
         </div>
