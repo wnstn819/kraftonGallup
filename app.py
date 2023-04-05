@@ -35,6 +35,7 @@ else :
 
 @app.route('/')
 def home():
+   
    return render_template("login.html")
 
 
@@ -117,6 +118,7 @@ def protected():
 @app.route('/list')
 def list_main():  
     sort = 'date'
+    db.list.update_many({'expired' : {'$lt' : datetime.datetime.now()}} ,{'$set':{'vaild' :0}})
     #진행중 리스트 페이징 묶음
     valid_list_data = {
         'page' : request.args.get("page", 1, type=int),
@@ -138,7 +140,6 @@ def list_main():
         'block_start' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1,
         'block_end' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1 + (5 - 1)
     }
-
     return render_template(
             'table.html', 
             valid_list_data=valid_list_data,
