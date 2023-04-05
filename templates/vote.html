@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <!-- Use Bulma -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <!-- Use JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.3.js" 
+            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" 
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" 
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <title>크래프톤 정글 BLUE | Casting Vote</title>
+    <style>
+        .wrap {
+            margin: auto;
+            width: 600px;
+        }
+
+        .mytitle {
+            color: black;
+            width: 600px;
+            height: 100px;
+            /* background-image: url('https://www.ancient-origins.net/sites/default/files/field/image/Agesilaus-II-cover.jpg'); */
+            /* background-position: center; */
+            /* background-size: cover; */
+
+            border-radius: 10px;
+            text-align: center;
+            padding-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="mytitle mb-6">
+            <h1 class="title is-1">Casting Vote</h1>
+        </div>
+
+        <div id="vote-box" class="box mb-4" style="width:600px; margin:auto;">
+            <!-- <div class="columns"> -->
+                <!-- <div class="column"> -->
+                    
+                    <div class="field">
+                        <label class="label is-size-4">Title</label>
+                        <div class="control">
+                            <div class="block ml-2">title sample</div>
+                            <!-- <input class="input" type="text" placeholder="input Title" value="title sample" readonly> -->
+                        </div>
+                    </div><!-- /title -->
+              
+                    <div class="field">
+                        <label class="label is-size-4">Detail</label>
+                        <div class="control">
+                            <div class="block ml-2">detail sample</div>
+                            <!-- <textarea   class="textarea" placeholder="detail contents" rows="2" readonly>detaile sample</textarea> -->
+                        </div>
+                    </div><!-- /Detale -->
+                    <label class="label is-size-4">Vote</label>
+
+                    <div id="vote-setting" class="ml-5">
+                        <div class="field has-addons">
+                            <label class="label mr-5">중복 제약</label>
+                            <div class="control">
+                                <label class="radio">
+                                    <input type="radio" name="multi" disabled>
+                                    가능
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="multi" disabled checked>
+                                    불가능
+                                </label>
+                            </div>
+                        </div><!-- /Multi -->
+
+                        <div class="field has-addons">
+                            <label class="label mr-5">클래스 제약</label>
+                            <div class="control">
+                                <label class="radio">
+                                    <input type="radio" name="class" disabled>
+                                    레드
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="class" checked disabled>
+                                    블루
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="class" disabled>
+                                    그린
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="class" disabled>
+                                    모든 클래스
+                                </label>
+                            </div>
+                        </div><!-- /Class -->
+                        <label class="label">세부항목</label>
+
+                        <div id="vote-option" class="m-5">
+                            <div class="field has-addons">
+                                <label class="label mr-5 has-text-justified">1</label>
+                                <div class="control is-expanded">
+                                    <input class="input" type="text" value="option 1" disabled>
+                                </div>
+                                <div class="control">
+                                    <div class="button" disabled>7</div>
+                                    <div class="button">
+                                        <input type="radio" name="option">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field has-addons">
+                                <label class="label mr-5">2</label>
+                                <div class="control is-expanded">
+                                    <input class="input" type="text" value="option 2" disabled>
+                                </div>
+                                <div class="control">
+                                    <div class="button" disabled>7</div>
+                                    <div class="button">
+                                        <input type="radio" name="option">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field has-addons">
+                                <label class="label mr-5">3</label>
+                                <div class="control is-expanded">
+                                    <input class="input" type="text" value="option 3" disabled>
+                                </div>
+                                <div class="control">
+                                    <div class="button" disabled>1</div>
+                                    <div class="button">
+                                        <input type="radio" name="option">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field has-addons">
+                                <label class="label mr-5">4</label>
+                                <div class="control is-expanded">
+                                    <input class="input" type="text" value="option 4" disabled>
+                                </div>
+                                <div class="control">
+                                    <div class="button is-hovered" disabled >0</div>
+                                    <div class="button">
+                                        <input type="radio" name="option">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 추가 버튼 -->
+                            <!-- <div class="field is-grouped has-addons has-addons-centered">
+                                <div class="button">+</div>
+                            </div> --> <!-- /추가 버튼 -->
+                        </div><!-- /Vote Option -->
+                    </div><!-- /Vote Setting -->
+                <!-- </div> -->
+                <!-- /Column -->
+            <!-- </div> -->
+            <!-- /Columns -->
+
+            <div class="columns">
+                <div class="column is-full">
+                    <div class="field">
+                        <div class="buttons  is-centered">
+                            <div class="control">
+                                <button class="button is-info">투표하기</button>
+                            </div>
+                            <div class="control">
+                                <button class="button is-info is-light" onclick="">목록으로</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
