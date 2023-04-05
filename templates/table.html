@@ -1,0 +1,196 @@
+{% extends 'list.html' %}
+{% block table %}
+            <!-- 진행중 투표 col -->
+            <div class="column">
+                <div id="list-box" style="margin:autho;width:700px;">
+                    <div class="columns">
+                        <div class="column is-1 has-background-light has-text-weight-semibold is-size-6">No</div>
+                        <div class="column is-7 has-background-light has-text-weight-semibold is-size-6">Title</div>
+                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
+                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">First Now</div>
+                    </div>
+                    <!-- {{validList}}
+                    <br><br><br><br>
+                    {{validList[0]}}
+                    <br><br><br><br>
+                    {{validList[0]["title"]}} -->
+                    
+                    {% for vote in validList %}
+                    <div class="columns">
+                        <!-- <div class="column is-full">{{vote}}</div> -->
+                        <div class="column is-1">{{vote["_id"]}}</div>
+                        <div class="column is-7">{{vote["title"]}}</div>
+                        <div class="column is-2">{{vote["createID"]}}</div>
+                        <div class="column is-2">분식</div>
+                    </div>
+                    {% endfor%}
+<!-- 
+                    <div class="columns">
+                        <div class="column is-1">13</div>
+                        <div class="column is-7">점심 메뉴 추천해주세요</div>
+                        <div class="column is-2">홍길동</div>
+                        <div class="column is-2">분식</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-full">
+                            <div class="buttons has-addons is-centered">
+                                <button class="button is-info is-selected">1</button>
+                                <button class="button">2</button>
+                                <button class="button">3</button>
+                                <button class="button">4</button>
+                                <button class="button">5</button>
+                                <button class="button">6</button>
+                                <button class="button">7</button>
+                                <button class="button">8</button>
+                                <button class="button">9</button>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            
+            <!-- 구분 col -->
+            <div class="column is-narrow">
+            </div>
+
+            <!-- 만료 투표 col -->
+            <div class="column">
+                <div id="list-box1" style="margin:autho;width:700px;">
+                    <div class="columns">
+                        <div class="column is-1 has-background-light has-text-weight-semibold is-size-6">No</div>
+                        <div class="column is-7 has-background-light has-text-weight-semibold is-size-6">Title</div>
+                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
+                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">First Now</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">13</div>
+                        <div class="column is-7">점심 메뉴 추천해주세요</div>
+                        <div class="column is-2">홍길동</div>
+                        <div class="column is-2">분식</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-1">0</div>
+                        <div class="column is-7">제목</div>
+                        <div class="column is-2">작성자</div>
+                        <div class="column is-2">1위항목</div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-full">
+                            <div class="buttons has-addons is-centered">
+                                <button class="button is-info is-selected">1</button>
+                                <button class="button">2</button>
+                                <button class="button">3</button>
+                                <button class="button">4</button>
+                                <button class="button">5</button>
+                                <button class="button">6</button>
+                                <button class="button">7</button>
+                                <button class="button">8</button>
+                                <button class="button">9</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock %}

@@ -110,23 +110,26 @@ def protected():
 
 
 # 게시글 페이지
-
-
 @app.route('/list')
 def list_main():  
-   # token_receive = request.cookies.get('mytoken')
-   return render_template('list.html', a="list")
+    # token_receive = request.cookies.get('mytoken')
+    # 최초 호출, 임시 고정값
+    sort = 'date'   # request.form['sort']
+    vaild = '1'       #request.form['vaild']
+    
+    result = list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]))
+    result2 = list(db.list.find({'vaild':'0'}).sort([(sort,-1), ('date',-1)]))
+
+    return render_template('table.html', validList=result, invalidList=result2, attr='checked')
+
 
 
 @app.route('/list/get', methods=['POST'])
 def get_list():
     sort = request.form['sort']
     vaild = request.form['vaild']
-    print(vaild)
     result = list(db.list.find({'vaild':vaild}).sort([(sort,-1), ('date',-1)]))
     return jsonify({'result': 'success', 'list': result})
-    
-
 
 # 새글 생성
 @app.route('/list/create')
