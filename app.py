@@ -121,7 +121,9 @@ def list_main():
 @app.route('/list/get', methods=['POST'])
 def get_list():
     sort = request.form['sort']
-    result = list(db.list.find({}).sort(sort,-1))
+    vaild = request.form['vaild']
+    print(vaild)
+    result = list(db.list.find({'vaild':vaild}).sort([(sort,-1), ('date',-1)]))
     return jsonify({'result': 'success', 'list': result})
     
 
@@ -140,6 +142,7 @@ def add_contents():
    room = request.form['room']
    voteContents = request.form['voteContents']
    createId = request.form['createId']
+   vaild = request.form['valid']
 
    seq = db.listCounters.find({})[0]['seq']
    new_contents = {
@@ -150,7 +153,8 @@ def add_contents():
        "room" : room,
        "voteContents" : voteContents,
        "date" : datetime.datetime.now(),
-       "createId": createId
+       "createId": createId,
+       "vaild" : vaild,
    }
 
  
