@@ -7,7 +7,7 @@
                         <div class="column is-1 has-background-light has-text-weight-semibold is-size-6">No</div>
                         <div class="column is-7 has-background-light has-text-weight-semibold is-size-6">Title</div>
                         <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
-                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">First Now</div>
+                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Date</div>
                     </div>
                     <!-- {{validList}}
                     <br><br><br><br>
@@ -15,76 +15,17 @@
                     <br><br><br><br>
                     {{validList[0]["title"]}} -->
                     
+                    <!-- 페이징 없이 전체표시 -->
                     {% for vote in validList %}
-                    <div class="columns">
-                        <!-- <div class="column is-full">{{vote}}</div> -->
+                    <div class="columns" onclick="window.location.href='/list/vote/{{vote["_id"]}}'">
                         <div class="column is-1">{{vote["_id"]}}</div>
-                        <div class="column is-7">{{vote["title"]}}</div>
-                        <div class="column is-2">{{vote["createID"]}}</div>
-                        <div class="column is-2">분식</div>
+                        <div class="column is-7" >{{vote["title"]}}</div>
+                        <div class="column is-2">{{vote["createId"]}}</div>
+                        <div class="column is-2">{{vote["date"]}}</div>
                     </div>
                     {% endfor%}
-<!-- 
-                    <div class="columns">
-                        <div class="column is-1">13</div>
-                        <div class="column is-7">점심 메뉴 추천해주세요</div>
-                        <div class="column is-2">홍길동</div>
-                        <div class="column is-2">분식</div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-1">0</div>
-                        <div class="column is-7">제목</div>
-                        <div class="column is-2">작성자</div>
-                        <div class="column is-2">1위항목</div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-1">0</div>
-                        <div class="column is-7">제목</div>
-                        <div class="column is-2">작성자</div>
-                        <div class="column is-2">1위항목</div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-1">0</div>
-                        <div class="column is-7">제목</div>
-                        <div class="column is-2">작성자</div>
-                        <div class="column is-2">1위항목</div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-1">0</div>
-                        <div class="column is-7">제목</div>
-                        <div class="column is-2">작성자</div>
-                        <div class="column is-2">1위항목</div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-1">0</div>
-                        <div class="column is-7">제목</div>
-                        <div class="column is-2">작성자</div>
-                        <div class="column is-2">1위항목</div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-1">0</div>
-                        <div class="column is-7">제목</div>
-                        <div class="column is-2">작성자</div>
-                        <div class="column is-2">1위항목</div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-1">0</div>
-                        <div class="column is-7">제목</div>
-                        <div class="column is-2">작성자</div>
-                        <div class="column is-2">1위항목</div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-1">0</div>
-                        <div class="column is-7">제목</div>
-                        <div class="column is-2">작성자</div>
-                        <div class="column is-2">1위항목</div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-1">0</div>
-                        <div class="column is-7">제목</div>
-                        <div class="column is-2">작성자</div>
-                        <div class="column is-2">1위항목</div>
-                    </div>
+                    <!-- 버튼 껍데기 -->
+                    <!-- 
                     <div class="columns">
                         <div class="column is-full">
                             <div class="buttons has-addons is-centered">
@@ -99,7 +40,8 @@
                                 <button class="button">9</button>
                             </div>
                         </div>
-                    </div> -->
+                    </div> 
+                    -->
                 </div>
             </div>
             
@@ -114,7 +56,7 @@
                         <div class="column is-1 has-background-light has-text-weight-semibold is-size-6">No</div>
                         <div class="column is-7 has-background-light has-text-weight-semibold is-size-6">Title</div>
                         <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
-                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">First Now</div>
+                        <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Date</div>
                     </div>
                     <div class="columns">
                         <div class="column is-1">13</div>
