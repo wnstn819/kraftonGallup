@@ -73,49 +73,6 @@
             })
         }
 
-        // 게시글 조회
-        function find() {
-            // 진행중 투표
-            $.ajax({
-                type: "POST",
-                url: "/list/get",
-                data: { "sort": sort, "vaild": 1 },
-                success: (res) => {
-                    console.log(res);
-                    // html 태그 형성하는 위치 -> table.html (jinja template)에 구현
-                    if (res['result'] == 'success') {
-                        // console.log("vaild == 1 ");
-                        // console.log(res['list'])
-                        // list = res['list']
-                        // for(i in list){
-                        //     console.log(i);
-                        //     let temp=` <div class="columns">
-                        //     <div class="column is-1" onclick="window.location.href='/list/vote/${list[i]['_id']}'">${list[i]['_id']}</div>
-                        //     <div class="column is-7">점심 메뉴 추천해주세요</div>
-                        //     <div class="column is-2">홍길동</div>
-                        //     <div class="column is-2">분식</div>
-                        // </div>`
-                        //     // $('#list-box').append(temp)
-                        // }
-                    }
-                }
-            })
-
-            // 기간만료 투표
-            $.ajax({
-                type: "POST",
-                url: "/list/get",
-                data: { "sort": sort, "vaild": 0 },
-                success: (res) => {
-                    console.log(res);
-                    if (res['result'] == 'success') {
-                        console.log("vaild == 0 ");
-                        console.log(res['list'])
-                    }
-                }
-            })
-
-        }
   
       // 로그아웃
       function logout(){

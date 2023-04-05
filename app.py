@@ -57,7 +57,7 @@ def login():
              return jsonify({'token':access_token, 'room':room,'result':'success'}), 200
    return jsonify({'msg' : 'The username or password is incorrect','result' : 'fail'})
 
-    
+
 
 ################################## 회원 가입 페이지 ##################################
 
@@ -118,7 +118,7 @@ def protected():
 @app.route('/list')
 def list_main():  
     sort = 'date'
-    db.list.update_many({'expired' : {'$lt' : datetime.datetime.now()}} ,{'$set':{'vaild' :0}})
+    db.list.update_many({'expired' : {'$lt' : datetime.datetime.now()}} ,{'$set':{'vaild' : '0'}})
     #진행중 리스트 페이징 묶음
     valid_list_data = {
         'page' : request.args.get("page", 1, type=int),
@@ -140,6 +140,8 @@ def list_main():
         'block_start' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1,
         'block_end' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1 + (5 - 1)
     }
+    print(list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]).skip((request.args.get("page", 1, type=int) - 1) * 10).limit(10)))
+    print(list(db.list.find({'vaild':'0'}).sort([(sort,-1), ('date',-1)]).skip((request.args.get("page", 1, type=int) - 1) * 10).limit(10)))
     return render_template(
             'table.html', 
             valid_list_data=valid_list_data,
@@ -148,11 +150,9 @@ def list_main():
 
 
 
-@app.route('/list/get', methods=['POST'])
+@app.route('/list/get', methods=["GET"])
 def get_list():
-    sort = request.form['sort']
-    vaild = request.form['vaild']
-    result = list(db.list.find({'vaild':vaild}).sort([(sort,-1), ('date',-1)]))
+    result = list(db.list.find({'vaild':"1"}).sort([('date',-1)]))
     return jsonify({'result': 'success', 'list': result})
 
 ################################## 새글 생성 ##################################

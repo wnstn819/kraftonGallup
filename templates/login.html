@@ -42,8 +42,14 @@
     let doubleCheckBoolean = false;
 
     $(document).ready(function () {
+      listGet()
       $.cookie('mytoken') && getUsername();
+      
+
     });
+    function getDB(){
+      
+    }
 
     function getUsername() {
       $.ajax({
@@ -117,6 +123,28 @@
         }
 
       })
+    }
+
+    function listGet(){
+       $.ajax({
+        type:"GET",
+        url:"/list/get",
+        data:{},
+        success:(res)=>{
+          if(res['result'] == 'success'){
+            console.log(res['list']);
+            $('#new').empty()
+            let temp = `
+            <p>
+            <strong>바로 지금 최신 투표글!!</strong><br>
+            <a href="javascript:alert('로그인 해주세요.');">${res['list'][0]['title']}</a>
+            </p>`
+            $('#new').append(temp)
+          }
+          
+          
+        }
+       })
     }
 
     //중복체크
@@ -196,7 +224,7 @@
         <button class="button is-light is-fullwidth" onclick="openJoin()">Join</button>
       </div>
     </div>
-    <div class="notification mb-6" style="width:500px;margin:auto;text-align: center;">
+    <div id="new" class="notification mb-6" style="width:500px;margin:auto;text-align: center;">
       <p>
         <strong>바로지금 HOT 투표글</strong><br>
         <a href="#">학습 vs 실습 뭐가 먼저인가?</a>
