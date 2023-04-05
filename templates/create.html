@@ -35,6 +35,70 @@
             padding-top: 50px;
         }
     </style>
+
+    <script>
+            let cnt = 2;
+            let userId;
+            $(document).ready(function () {
+            getUsername();
+
+            }); 
+
+            function getUsername(){
+            $.ajax({
+              type: "GET",
+              headers: {
+                  'Authorization' : `Bearer ${$.cookie('mytoken')}`,
+              },
+              url: "/protected",
+              data: {},
+              success: (res) => {
+                  console.log(res);
+                  if (res['result'] == 'success') {
+                    userId=res['logged_in_as']['identity']
+                          
+                  }else{
+                      window.location.replace("/")
+                  }
+              }
+              
+            })
+        }   
+
+          function create(){
+            var title = $("#title").val()
+            var details = $("#details").val()
+            var multi = $("input[name=multi]:checked").val()
+            var room = $("input[name=class]:checked").val()
+            
+            
+            let parse = {};            
+            for(i = 1;i<=cnt;i++){
+                let value = $(`#text${i}`).val()
+                parse[value] = []
+            }
+          
+            $.ajax({
+            type: "POST",
+            url: "/list/create/post",
+            data: {"title": title, "details" : details, "multi": multi, "room": room, "voteContents": JSON.stringify(parse), "createId" : userId},
+            success: (res) => {
+                console.log(res);
+                console.log(res['result']);
+                if (res['result'] == 'success') {
+                   alert('등록되었습니다.')
+                   window.location.replace("/list")
+                }else{
+                    console.log("fail");
+                }
+            }
+
+             })
+
+
+
+        }
+    </script>
 </head>
 
 <body>
@@ -50,14 +114,14 @@
                     <div class="field">
                         <label class="label is-size-4">Title</label>
                         <div class="control">
-                            <input class="input" type="text" placeholder="input Title">
+                            <input id="title" class="input" type="text" placeholder="input Title">
                         </div>
                     </div><!-- /title -->
               
                     <div class="field">
                         <label class="label is-size-4">Detail</label>
                         <div class="control">
-                            <textarea class="textarea" placeholder="detail contents" rows="2"></textarea>
+                            <textarea id="details" class="textarea" placeholder="detail contents" rows="2"></textarea>
                         </div>
                     </div><!-- /Detale -->
                     <label class="label is-size-4">Vote</label>
@@ -67,11 +131,11 @@
                             <label class="label mr-5">중복 제약</label>
                             <div class="control">
                                 <label class="radio">
-                                    <input type="radio" name="question">
+                                    <input type="radio" name="multi" value="True" checked>
                                     가능
                                 </label>
                                 <label class="radio">
-                                    <input type="radio" name="question">
+                                    <input type="radio" name="multi" value="False">
                                     불가능
                                 </label>
                             </div>
@@ -81,19 +145,19 @@
                             <label class="label mr-5">클래스 제약</label>
                             <div class="control">
                                 <label class="radio">
-                                    <input type="radio" name="question">
+                                    <input type="radio" name="class" value="레드" checked>
                                     레드
                                 </label>
                                 <label class="radio">
-                                    <input type="radio" name="question">
+                                    <input type="radio" name="class" value="블루">
                                     블루
                                 </label>
                                 <label class="radio">
-                                    <input type="radio" name="question">
+                                    <input type="radio" name="class" value="그린">
                                     그린
                                 </label>
                                 <label class="radio">
-                                    <input type="radio" name="question">
+                                    <input type="radio" name="class" value="ALL">
                                     모든 클래스
                                 </label>
                             </div>
@@ -104,7 +168,7 @@
                             <div class="field has-addons">
                                 <label class="label mr-5 has-text-justified">1</label>
                                 <div class="control is-expanded">
-                                    <input class="input" type="text" placeholder="input Option">
+                                    <input id="text1" class="input" type="text" placeholder="input Option">
                                 </div>
                                 <div class="control">
                                     <a class="button is-invisible">-</a>
@@ -113,8 +177,8 @@
                             <div class="field has-addons">
                                 <label class="label mr-5">2</label>
                                 <div class="control is-expanded">
-                                    <input class="input" type="text" placeholder="input Option">
-                                </div>
+                                    <input id="text2" class="input" type="text" placeholder="input Option">
+                                </div> 
                                 <div class="control">
                                     <a class="button is-invisible">-</a>
                                 </div>
@@ -122,7 +186,7 @@
                             <div class="field has-addons">
                                 <label class="label mr-5">3</label>
                                 <div class="control is-expanded">
-                                    <input class="input" type="text" placeholder="input Option">
+                                    <input id="text3" class="input" type="text" placeholder="input Option">
                                 </div>
                                 <div class="control">
                                     <a class="button">-</a>
@@ -131,7 +195,7 @@
                             <div class="field has-addons">
                                 <label class="label mr-5">4</label>
                                 <div class="control is-expanded">
-                                    <input class="input" type="text" placeholder="input Option">
+                                    <input id="text4" class="input" type="text" placeholder="input Option">
                                 </div>
                                 <div class="control">
                                     <a class="button">-</a>
@@ -152,7 +216,7 @@
                     <div class="field">
                         <div class="buttons  is-centered">
                             <div class="control">
-                                <button class="button is-info">등록하기</button>
+                                <button class="button is-info" onclick="create()">등록하기</button>
                             </div>
                             <div class="control">
                                 <button class="button is-info is-light" onclick="">목록으로</button>

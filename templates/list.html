@@ -36,7 +36,9 @@
     </style>
     <script>
         $(document).ready(function () {
-            $.cookie('mytoken') ? getUsername() : window.location.replace("/");
+            $.cookie('mytoken') ? getUsername() : window.location.replace("/")
+            find()
+
         });
   
       // 토큰 관리
@@ -62,9 +64,19 @@
         }   
   
       // 게시글 조회
-  
-  
       function find(){
+        sort = "_id"
+        $.ajax({
+            type:"POST",
+            url: "/list/get",
+            data:{"sort":sort},
+            success:(res)=>{
+
+                if(res['result'] == 'success'){
+                    console.log(res['list'])
+                }
+            }
+        })
   
       }
   
@@ -104,6 +116,10 @@
                         </div>
                         <div class="column is-one-fifth">
                             <div class="button is-info" onClick="create()">New Vote</div>
+                        </div>
+
+                        <div class="column is-one-fifth">
+                            <div class="button is-info" onClick="logout()">Logout</div>
                         </div>
                         <div class="column auto"></div>
                     </div>

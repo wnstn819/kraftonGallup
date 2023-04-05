@@ -22,12 +22,12 @@ jwtM = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'testKey'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1) # define the life span of the token
 
-if 'user_counters' in db.list_collection_names():
+if 'userCounters' in db.list_collection_names():
     print(db.list_collection_names())
 else :
     db.userCounters.insert_one({"seq" : 0})
 
-if 'list_counters' in db.list_collection_names():
+if 'listCounters' in db.list_collection_names():
     print(db.list_collection_names())
 else :
     db.listCounters.insert_one({"seq" : 0})
@@ -88,7 +88,7 @@ def register():
 
    
 @app.route('/join/double', methods=['POST'])
-def dobuleChekc():
+def dobuleCheck():
     id = request.form['id']
     doc = users_collection.find_one({"id": id})
     if not doc:
@@ -118,9 +118,10 @@ def list_main():
    return render_template('list.html', a="list")
 
 
-@app.route('/list/get', methods=['GET'])
+@app.route('/list/get', methods=['POST'])
 def get_list():
-    result = list(db.list.find({}))
+    sort = request.form['sort']
+    result = list(db.list.find({}).sort(sort,-1))
     return jsonify({'result': 'success', 'list': result})
     
 
@@ -129,7 +130,7 @@ def get_list():
 @app.route('/list/create')
 def contents():  
    # token_receive = request.cookies.get('mytoken')
-   return render_template('contents.html', a="list")
+   return render_template('create.html', a="list")
 
 @app.route('/list/create/post', methods=["POST"])
 def add_contents():  
@@ -138,21 +139,25 @@ def add_contents():
    multi = request.form['multi']
    room = request.form['room']
    voteContents = request.form['voteContents']
+   createId = request.form['createId']
 
-   seq = db.userCounters.find({})[0]['seq']
+   seq = db.listCounters.find({})[0]['seq']
    new_contents = {
        "_id":seq,
        "title": title,
        "details" : details,
        "multi" : multi,
        "room" : room,
-       "voteContents" : voteContents
+       "voteContents" : voteContents,
+       "date" : datetime.datetime.now(),
+       "createId": createId
    }
+
+ 
 
    list_collection.insert_one(new_contents)
    db.listCounters.update_one({'seq': seq},{'$set':{'seq' : (seq+1)}})
-   return 'This is My Page!'
-
+   return jsonify({'msg':'등록되었습니다.','result': 'success'})
 
 # 상세 페이지
 
