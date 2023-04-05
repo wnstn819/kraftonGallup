@@ -35,10 +35,13 @@
         }
     </style>
     <script>
+        window.addEventListener('focus', function() {
+        console.log('사용자가 웹페이지에 돌아왔습니다.')
+         find()
+        }, false);
         $(document).ready(function () {
-            $.cookie('mytoken') ? getUsername() : window.location.replace("/")
-            // json 형식 res 받는 리스트조회
-            // find()
+            $.cookie('mytoken') ? getUsername() : window.location.href ="/"
+            find()
 
         });
         let sort="date";
@@ -72,9 +75,21 @@
             url: "/list/get",
             data:{"sort":sort, "vaild": 1},
             success:(res)=>{
-
+                console.log(res);
                 if(res['result'] == 'success'){
+                    console.log("vaild == 1 ");
                     console.log(res['list'])
+                    list = res['list']
+                    for(i in list){
+                        console.log(i);
+                        let temp=` <div class="columns">
+                        <div class="column is-1" onclick="window.location.href='/list/vote/${list[i]['_id']}'">${list[i]['_id']}</div>
+                        <div class="column is-7">점심 메뉴 추천해주세요</div>
+                        <div class="column is-2">홍길동</div>
+                        <div class="column is-2">분식</div>
+                    </div>`
+                        $('#list-box').append(temp)
+                    }
                 }
             }
         })
@@ -85,25 +100,22 @@
             url: "/list/get",
             data:{"sort":sort, "vaild": 0},
             success:(res)=>{
-
+                console.log(res);
                 if(res['result'] == 'success'){
+                    console.log("vaild == 0 ");
                     console.log(res['list'])
                 }
             }
         })
   
       }
-  
-  
-      function create(){
-          window.location.replace("/list/create")
-      }
-  
+
+     
   
       // 로그아웃
       function logout(){
           $.removeCookie('mytoken')
-          window.location.replace("/")
+          window.location.href ="/"
       }
 
       const changeSort = (target) => {
@@ -124,17 +136,20 @@
  
         <!-- 정렬&버튼 row -->
         <div class="columns">
-            <div class="column is-1">
-                <div class="select">
-                    <select onchange="changeSort(this)">
-                      <option value="date">최신순</option>
-                      <option value="createId">인기순</option>
-                    </select>
-                </div>
-            </div>
-            <div class="column is-1">
-                <div class="button is-info" onClick="create()">New Vote</div>
-            </div>
+            <div class="column">
+                <div id="list-box" style="margin:autho;width:700px;">
+                    <div class="columns">
+                        <div class="column is-one-fifth">
+                            <div class="select">
+                                <select onchange="changeSort(this)">
+                                  <option value="date">최신순</option>
+                                  <option value="createId">인기순</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="column is-one-fifth">
+                            <div class="button is-info" onclick="window.location.href='/list/create'">New Vote</div>
+                        </div>
 
             <div class="column is-1">
                 <div class="button is-info" onClick="logout()">Logout</div>

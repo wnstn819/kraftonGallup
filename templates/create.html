@@ -58,7 +58,7 @@
                     userId=res['logged_in_as']['identity']
                           
                   }else{
-                      window.location.replace("/")
+                      window.location.href ="/"
                   }
               }
               
@@ -87,7 +87,7 @@
                 console.log(res['result']);
                 if (res['result'] == 'success') {
                    alert('등록되었습니다.')
-                   window.location.replace("/list")
+                   window.location.href ="/list"
                 }else{
                     console.log("fail");
                 }
@@ -98,13 +98,18 @@
 
 
         }
+        function back(){
+            window.history.go(-1)
+        }
     </script>
 </head>
 
 <body>
+
     <div class="wrap">
         <div class="mytitle mb-6">
             <h1 class="title is-1">Casting Vote</h1>
+        
         </div>
 
         <div id="vote-box" class="box mb-4" style="width:600px; margin:auto;">
@@ -219,7 +224,7 @@
                                 <button class="button is-info" onclick="create()">등록하기</button>
                             </div>
                             <div class="control">
-                                <button class="button is-info is-light" onclick="">목록으로</button>
+                                <button class="button is-info is-light" onclick="back()">목록으로</button>
                             </div>
                         </div>
                     </div>

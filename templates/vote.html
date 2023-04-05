@@ -33,13 +33,33 @@
             text-align: center;
             padding-top: 50px;
         }
+       
+        
     </style>
+    <script>
+         $(document).ready(function () {
+           // getDetails()
+        }); 
+
+        // function getDetails(){
+        //     console.log({number} + "0000000");
+        //     $.ajax({
+        //         type:"POST",
+        //         url:"/list/vote/details",
+        //         data:{"id" : {number}},
+        //         success:(res)=>{
+        //             console.log(res + "  res");
+        //         }
+        //     })
+        // }
+    </script>
 </head>
 
 <body>
     <div class="wrap">
         <div class="mytitle mb-6">
             <h1 class="title is-1">Casting Vote</h1>
+  
         </div>
 
         <div id="vote-box" class="box mb-4" style="width:600px; margin:auto;">
@@ -49,7 +69,7 @@
             <div class="field">
                 <label class="label is-size-4">Title</label>
                 <div class="control">
-                    <div class="block ml-2">title sample</div>
+                    <div class="block ml-2">{{data[0]["title"]}}</div>
                     <!-- <input class="input" type="text" placeholder="input Title" value="title sample" readonly> -->
                 </div>
             </div><!-- /title -->
@@ -57,7 +77,7 @@
             <div class="field">
                 <label class="label is-size-4">Detail</label>
                 <div class="control">
-                    <div class="block ml-2">detail sample</div>
+                    <div class="block ml-2">{{data[0]["details"]}}</div>
                     <!-- <textarea   class="textarea" placeholder="detail contents" rows="2" readonly>detaile sample</textarea> -->
                 </div>
             </div><!-- /Detale -->
@@ -67,14 +87,26 @@
                 <div class="field has-addons">
                     <label class="label mr-5">중복 제약</label>
                     <div class="control">
-                        <label class="radio">
+                        <label class="radio">   
+                        {% if data[0]["multi"] == 'True' %}
+                            <input type="radio" name="multi" disabled checked>
+                            가능
+                            </label>
+                            <label class="radio">
+                            <input type="radio" name="multi" disabled >
+                            불가능
+                            </label>
+                        {% else %}
                             <input type="radio" name="multi" disabled>
                             가능
-                        </label>
-                        <label class="radio">
+                            </label>
+                            <label class="radio">
                             <input type="radio" name="multi" disabled checked>
                             불가능
-                        </label>
+                            </label>
+                        {% endif %}
+
+                            
                     </div>
                 </div><!-- /Multi -->
 
@@ -82,26 +114,51 @@
                     <label class="label mr-5">클래스 제약</label>
                     <div class="control">
                         <label class="radio">
+                            {% if data[0]["room"] == '레드' %}
+                            <input type="radio" name="class" disabled checked>
+                            레드
+                            {% else %}
                             <input type="radio" name="class" disabled>
                             레드
+                            {% endif %}
+                            
                         </label>
                         <label class="radio">
-                            <input type="radio" name="class" checked disabled>
+                            {% if data[0]["room"] == '블루' %}
+                            <input type="radio" name="class" disabled checked>
                             블루
+                            {% else %}
+                            <input type="radio" name="class" disabled>
+                            블루
+                            {% endif %}
                         </label>
                         <label class="radio">
+                            {% if data[0]["room"] == '그린' %}
+                            <input type="radio" name="class" disabled checked>
+                            그린
+                            {% else %}
                             <input type="radio" name="class" disabled>
                             그린
+                            {% endif %}
                         </label>
                         <label class="radio">
+                            {% if data[0]["room"] == 'ALL' %}
+                            <input type="radio" name="class" disabled checked>
+                            모든 클래스
+                            {% else %}
                             <input type="radio" name="class" disabled>
                             모든 클래스
+                            {% endif %}
                         </label>
                     </div>
                 </div><!-- /Class -->
                 <label class="label">세부항목</label>
 
                 <div id="vote-option" class="m-5">
+                 
+                    {% for vate in (data[0]['voteContents']) %}
+                    <div>hihihihihih</div>
+                    {% endfor %}
                     <div class="field has-addons">
                         <label class="label mr-5 has-text-justified">1</label>
                         <div class="control is-expanded">
@@ -110,10 +167,11 @@
                         <div class="control">
                             <div class="button" disabled>7</div>
                             <div class="button">
-                                <input type="radio" name="option">
+                                <input type="radio" name="option" value="">
                             </div>
                         </div>
                     </div>
+                
                     <div class="field has-addons">
                         <label class="label mr-5">2</label>
                         <div class="control is-expanded">

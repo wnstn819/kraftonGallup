@@ -56,7 +56,7 @@
         success: (res) => {
           console.log(res);
           if (res['result'] == 'success') {
-            window.location.replace("/list")
+            window.location.href="/list"
           } else {
             console.log("fail");
           }
@@ -107,7 +107,7 @@
           console.log(res);
           if (res['result'] == 'success') {
             $.cookie('mytoken', res['token'], { path: '/' });
-            window.location.replace("/list")
+            window.location.href ="/list"
 
           } else {
             alert("ID와 Password를 확인 해주세요!")

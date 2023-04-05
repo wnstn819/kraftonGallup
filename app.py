@@ -16,7 +16,7 @@ list_collection = db["list"]
 
 
 app = Flask(__name__)
-# 로그인 페이지
+################################## 로그인 페이지 ##################################
 
 jwtM = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'testKey'
@@ -54,7 +54,7 @@ def login():
 
     
 
-# 회원 가입 페이지
+################################## 회원 가입 페이지 ##################################
 
 @app.route('/join/add', methods=['POST'])
 def register():
@@ -99,7 +99,7 @@ def dobuleCheck():
 
 
 
-#protected - 토큰 있는지 체크
+################################## protected - 토큰 있는지 체크 ##################################
 @app.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
@@ -131,7 +131,7 @@ def get_list():
     result = list(db.list.find({'vaild':vaild}).sort([(sort,-1), ('date',-1)]))
     return jsonify({'result': 'success', 'list': result})
 
-# 새글 생성
+################################## 새글 생성 ##################################
 @app.route('/list/create')
 def contents():  
    # token_receive = request.cookies.get('mytoken')
@@ -166,8 +166,21 @@ def add_contents():
    db.listCounters.update_one({'seq': seq},{'$set':{'seq' : (seq+1)}})
    return jsonify({'msg':'등록되었습니다.','result': 'success'})
 
-# 상세 페이지
 
+################################## 상세 페이지 ##################################
+@app.route('/list/vote/<number>', methods=["GET"])
+def vote(number):  
+   result = list(db.list.find({'_id':int(number)}))
+   print(str(result) + "@@@@@@@@")
+   # token_receive = request.cookies.get('mytoken')
+   return render_template('vote.html', data=result)
+
+@app.route('/list/vote/detail', methods=["POST"])
+def voteDetails():
+      id = request.form['id']
+      print(id + "ddddddid")
+      result = list(db.list.find({'_id':int(id)}))
+      return jsonify({'result':'success', 'details':result})
 
 
 if __name__ == '__main__':  
