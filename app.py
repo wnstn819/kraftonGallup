@@ -111,44 +111,35 @@ def protected():
 
 
 # 게시글 페이지
-# 페이징 ing
 @app.route('/list')
 def list_main():  
-    # token_receive = request.cookies.get('mytoken')
-    # 최초 호출, 임시 고정값
-    sort = 'date'   # request.form['sort']
-    vaild = '1'       #request.form['vaild']
-  
+    sort = 'date'
+    #진행중 리스트 페이징 묶음
+    valid_list_data = {
+        'page' : request.args.get("page", 1, type=int),
+        'limit' : 0,
+        'datas' : list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]).skip((request.args.get("page", 1, type=int) - 1) * 10).limit(10)),
+        'last_page_num' : math.ceil(len(list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]))) / 10),
+        'block_num' : int((request.args.get("page", 1, type=int) - 1) / 5),
+        'block_start' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1,
+        'block_end' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1 + (5 - 1)
+    }
 
-    result = list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]))    
-    result2 = list(db.list.find({'vaild':'0'}).sort([(sort,-1), ('date',-1)]))
-
-    # 페이징 값
-    page = request.args.get("page", 1, type=int)
-    # print(request.args.get("page", 1, type=int))
-    # page = 1
-    limit=10
-    # datas = list(db.list.find({'valid':'1'}).sort([(sort,-1),('date',-1)]).skip((page - 1) * limit).limit(limit))
-    datas = list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]).skip((page - 1) * limit).limit(limit))
-    tot_count = len(result)
-    last_page_num = math.ceil(tot_count / limit)
-    block_size=5
-    block_num = int((page - 1) / block_size)
-    block_start = (block_size * block_num) + 1
-    block_end = block_start + (block_size - 1)
-    
+    #만료 리스트 페이징 묶음
+    invalid_list_data = {
+        'page' : request.args.get("page", 1, type=int),
+        'limit' : 0,
+        'datas' : list(db.list.find({'vaild':'0'}).sort([(sort,-1), ('date',-1)]).skip((request.args.get("page", 1, type=int) - 1) * 10).limit(10)),
+        'last_page_num' : math.ceil(len(list(db.list.find({'vaild':'0'}).sort([(sort,-1), ('date',-1)]))) / 10),
+        'block_num' : int((request.args.get("page", 1, type=int) - 1) / 5),
+        'block_start' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1,
+        'block_end' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1 + (5 - 1)
+    }
 
     return render_template(
             'table.html', 
-            validList=result, 
-            invalidList=result2, 
-            datas=datas,
-            limit=limit,
-            page=page,
-            block_start=block_start,
-            block_end=block_end,
-            tot_count = tot_count,
-            last_page_num=last_page_num
+            valid_list_data=valid_list_data,
+            invalid_list_data=invalid_list_data
         )
 
 
