@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
   <!-- use bulma -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <!-- use JQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
     crossorigin="anonymous"></script>
@@ -40,7 +41,6 @@
 
     let doubleCheckBoolean = false;
 
-
     $(document).ready(function () {
       $.cookie('mytoken') && getUsername();
     });
@@ -65,6 +65,7 @@
       })
     }
 
+    // 회원가입
     function joinAdd() {
       var id = $('#join-id').val();
       var pw = $('#join-pw').val();
@@ -72,7 +73,6 @@
       var age = $("#join-age").val()
       var gender = $("input[name=gender]:checked").val()
       var room = $("input[name=class]:checked").val()
-
 
       doubleCheckBoolean ? $.ajax({
         type: "POST",
@@ -136,20 +136,36 @@
       })
 
     }
+    //중복체크 후 id변경 방지
     function changeCheck() {
       doubleCheckBoolean = false
     }
 
+    //비밀번호 재확인
+    function confirmPassword() {
+      if ($('#join-pw').val() === $('#join-confirm-pw').val()) {
+        $('#pw-valid').hide();
+        $('#pw-confirmed').show();
+      } else {
+        $('#pw-confirmed').hide();
+        $('#pw-valid').show();
+      }
+    }
+
+    // 회원가입 폼 토글
     function openJoin() {
       $('#join-box').show()
     }
+
     function closeJoin() {
+      // 데이터 초기화 후 회원가입박스 비활성
       $('#join-id').val("")
       $('#join-pw').val("")
       $("#join-name").val("")
       $("#join-age").val("")
       $('#join-box').hide()
     }
+
   </script>
 </head>
 
@@ -160,7 +176,6 @@
     </div>
 
     <div class="loginbox mb-4" style="margin:auto; width: 400px;">
-
 
       <div class="field">
         <label class="label">ID</label>
@@ -202,16 +217,18 @@
           <div class="field">
             <label class="label">Password</label>
             <div class="control">
-              <input id="join-pw" class="input" type="password" placeholder="input Password">
+              <input id="join-pw" class="input" type="password" placeholder="input Password"
+                oninput="confirmPassword()">
             </div>
-            <p class="help is-success">This password is available</p>
           </div>
           <div class="field">
             <label class="label">Confirm Password</label>
             <div class="control">
-              <input id="join-confirm-pw" class="input" type="password" placeholder="input Password">
+              <input id="join-confirm-pw" class="input" type="password" placeholder="input Password"
+                oninput="confirmPassword()">
             </div>
-            <p class="help is-danger">This password is valid</p>
+            <p id="pw-valid" class="help is-danger" style="display:none;">This password is valid</p>
+            <p id="pw-confirmed" class="help is-success" style="display:none;">This password is available</p>
           </div>
         </div>
 
