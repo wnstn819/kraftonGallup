@@ -121,8 +121,8 @@ def list_main():
     valid_list_data = {
         'page' : request.args.get("page", 1, type=int),
         'limit' : 0,
-        'datas' : list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]).skip((request.args.get("page", 1, type=int) - 1) * 10).limit(10)),
-        'last_page_num' : math.ceil(len(list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]))) / 10),
+        'datas' : list(db.list.find({'vaild':'1'}).sort('date',-1).skip((request.args.get("page", 1, type=int) - 1) * 10).limit(10)),
+        'last_page_num' : math.ceil(len(list(db.list.find({'vaild':'1'}).sort('date',-1))) / 10),
         'block_num' : int((request.args.get("page", 1, type=int) - 1) / 5),
         'block_start' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1,
         'block_end' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1 + (5 - 1)
@@ -132,8 +132,8 @@ def list_main():
     invalid_list_data = {
         'page' : request.args.get("page", 1, type=int),
         'limit' : 0,
-        'datas' : list(db.list.find({'vaild':'0'}).sort([(sort,-1), ('date',-1)]).skip((request.args.get("page", 1, type=int) - 1) * 10).limit(10)),
-        'last_page_num' : math.ceil(len(list(db.list.find({'vaild':'0'}).sort([(sort,-1), ('date',-1)]))) / 10),
+        'datas' : list(db.list.find({'vaild':'0'}).sort('date',-1).skip((request.args.get("page", 1, type=int) - 1) * 10).limit(10)),
+        'last_page_num' : math.ceil(len(list(db.list.find({'vaild':'0'}).sort('date',-1))) / 10),
         'block_num' : int((request.args.get("page", 1, type=int) - 1) / 5),
         'block_start' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1,
         'block_end' : (5 * int((request.args.get("page", 1, type=int) - 1) / 5)) + 1 + (5 - 1)
@@ -170,6 +170,7 @@ def add_contents():
 
    seq = db.listCounters.find({})[0]['seq']
 
+   tz = datetime.timezone(datetime.timedelta(hours=9))
    new_contents = {
        "_id":seq,
        "title": title,
@@ -177,7 +178,7 @@ def add_contents():
        "room" : room,
        "expired" : convert_date[0],
        "voteContents" : voteContents,
-       "date" : datetime.datetime.now().strftime("%Y-%m-%d"),
+       "date" : datetime.datetime.now(tz=tz).strftime("%Y-%m-%d %H:%M:%S"),
        "createId": createId,
        "vaild" : vaild,
    }
