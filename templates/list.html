@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +10,10 @@
     <!-- Use Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <!-- Use JQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.3.js" 
-            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" 
-            crossorigin="anonymous"></script>
-    <script type="text/javascript" 
-            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <title>크래프톤 정글 BLUE | Casting Vote</title>
     <style>
         .wrap {
@@ -35,18 +35,24 @@
         }
     </style>
     <script>
-        window.addEventListener('focus', function() {
-        console.log('사용자가 웹페이지에 돌아왔습니다.')
-         find()
+        window.addEventListener('focus', function () {
+            console.log('사용자가 웹페이지에 돌아왔습니다.');
+            find();
         }, false);
+
         $(document).ready(function () {
-            $.cookie('mytoken') ? getUsername() : window.location.href ="/"
+            $.cookie('mytoken') ? getUsername() : window.location.href = "/"
             find()
 
         });
-        let sort="date";
-      // 토큰 관리
-       function getUsername(){
+
+        let sort = "date";
+
+        // for pagination
+        
+
+        // 토큰 관리
+        function getUsername() {
             $.ajax({
               type: "GET",
               headers: {
@@ -65,76 +71,77 @@
               }
               
             })
-        }   
-  
-      // 게시글 조회
-      function find(){
-        // 진행중 투표
-        $.ajax({
-            type:"POST",
-            url: "/list/get",
-            data:{"sort":sort, "vaild": 1},
-            success:(res)=>{
-                console.log(res);
-                // html 태그 형성하는 위치 -> table.html (jinja template)에 구현
-                if(res['result'] == 'success'){
-                    // console.log("vaild == 1 ");
-                    // console.log(res['list'])
-                    // list = res['list']
-                    // for(i in list){
-                    //     console.log(i);
-                    //     let temp=` <div class="columns">
-                    //     <div class="column is-1" onclick="window.location.href='/list/vote/${list[i]['_id']}'">${list[i]['_id']}</div>
-                    //     <div class="column is-7">점심 메뉴 추천해주세요</div>
-                    //     <div class="column is-2">홍길동</div>
-                    //     <div class="column is-2">분식</div>
-                    // </div>`
-                    //     // $('#list-box').append(temp)
-                    // }
+        }
+
+        // 게시글 조회
+        function find() {
+            // 진행중 투표
+            $.ajax({
+                type: "POST",
+                url: "/list/get",
+                data: { "sort": sort, "vaild": 1 },
+                success: (res) => {
+                    console.log(res);
+                    // html 태그 형성하는 위치 -> table.html (jinja template)에 구현
+                    if (res['result'] == 'success') {
+                        // console.log("vaild == 1 ");
+                        // console.log(res['list'])
+                        // list = res['list']
+                        // for(i in list){
+                        //     console.log(i);
+                        //     let temp=` <div class="columns">
+                        //     <div class="column is-1" onclick="window.location.href='/list/vote/${list[i]['_id']}'">${list[i]['_id']}</div>
+                        //     <div class="column is-7">점심 메뉴 추천해주세요</div>
+                        //     <div class="column is-2">홍길동</div>
+                        //     <div class="column is-2">분식</div>
+                        // </div>`
+                        //     // $('#list-box').append(temp)
+                        // }
+                    }
                 }
-            }
-        })
+            })
 
-        // 기간만료 투표
-        $.ajax({
-            type:"POST",
-            url: "/list/get",
-            data:{"sort":sort, "vaild": 0},
-            success:(res)=>{
-                console.log(res);
-                if(res['result'] == 'success'){
-                    console.log("vaild == 0 ");
-                    console.log(res['list'])
+            // 기간만료 투표
+            $.ajax({
+                type: "POST",
+                url: "/list/get",
+                data: { "sort": sort, "vaild": 0 },
+                success: (res) => {
+                    console.log(res);
+                    if (res['result'] == 'success') {
+                        console.log("vaild == 0 ");
+                        console.log(res['list'])
+                    }
                 }
-            }
-        })
-  
-      }
+            })
 
-     
-  
-      // 로그아웃
-      function logout(){
-          $.removeCookie('mytoken')
-          window.location.href ="/"
-      }
+        }
 
-      const changeSort = (target) => {
-        sort = target.value
-        find()
-       
-      }
-    
-  
-          
-  </script>
+
+
+        // 로그아웃
+        function logout() {
+            $.removeCookie('mytoken')
+            window.location.href = "/"
+        }
+
+        const changeSort = (target) => {
+            sort = target.value
+            find()
+
+        }
+
+
+
+    </script>
 </head>
+
 <body>
     <div class="wrap">
         <div class="mytitle mb-6">
             <h1 class="title is-1">Casting Vote</h1>
         </div>
- 
+
         <!-- 정렬&버튼 row -->
         <div class="columns">
             <div class="column is-1">
@@ -143,13 +150,12 @@
 
             <div class="column is-10"></div>
             <div class="column is-1">
-                <div class="button is-info" onClick="logout()">Logout</div>
+                <div class="button is-dark" onClick="logout()">Logout</div>
             </div>
         </div>
         <!-- 테이블 영역 : jinja template 처리 table.html -->
         <div class="columns">
-        {% block table %}
-        {% endblock %}
+            {% block table %}{% endblock %}
         </div>
     </div>
 </body>

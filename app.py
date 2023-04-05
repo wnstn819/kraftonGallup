@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager, create_access_token,jwt_required,get_
 import datetime
 import hashlib
 import json
+import math
 
 client = MongoClient('localhost', 27017)  # mongoDB는 27017 포트로 돌아갑니다.
 
@@ -110,17 +111,45 @@ def protected():
 
 
 # 게시글 페이지
+# 페이징 ing
 @app.route('/list')
 def list_main():  
     # token_receive = request.cookies.get('mytoken')
     # 최초 호출, 임시 고정값
     sort = 'date'   # request.form['sort']
     vaild = '1'       #request.form['vaild']
-    
-    result = list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]))
+  
+
+    result = list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]))    
     result2 = list(db.list.find({'vaild':'0'}).sort([(sort,-1), ('date',-1)]))
 
-    return render_template('table.html', validList=result, invalidList=result2, attr='checked')
+    # 페이징 값
+    page = request.args.get("page", 1, type=int)
+    # print(request.args.get("page", 1, type=int))
+    # page = 1
+    limit=10
+    # datas = list(db.list.find({'valid':'1'}).sort([(sort,-1),('date',-1)]).skip((page - 1) * limit).limit(limit))
+    datas = list(db.list.find({'vaild':'1'}).sort([(sort,-1), ('date',-1)]).skip((page - 1) * limit).limit(limit))
+    tot_count = len(result)
+    last_page_num = math.ceil(tot_count / limit)
+    block_size=5
+    block_num = int((page - 1) / block_size)
+    block_start = (block_size * block_num) + 1
+    block_end = block_start + (block_size - 1)
+    
+
+    return render_template(
+            'table.html', 
+            validList=result, 
+            invalidList=result2, 
+            datas=datas,
+            limit=limit,
+            page=page,
+            block_start=block_start,
+            block_end=block_end,
+            tot_count = tot_count,
+            last_page_num=last_page_num
+        )
 
 
 
