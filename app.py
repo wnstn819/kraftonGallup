@@ -7,6 +7,7 @@ import json
 import math
 
 client = MongoClient('localhost', 27017)  # mongoDB는 27017 포트로 돌아갑니다.
+#client = MongoClient('mongodb://test:test@3.39.195.142', 27017)  # mongoDB는 27017 포트로 돌아갑니다.
 
 db = client["kraftonGallup"]
 users_collection = db["users"]
@@ -41,10 +42,12 @@ def home():
 def login():  
    id = request.form['id']
    password = request.form['password']
-   user_from_db = users_collection.find_one({'id': id})
-   room = user_from_db['room']
-   resp = make_response()
-   resp.set_cookie('room',room)
+   user_from_db = db.users.find_one({'id': id})
+   
+   if user_from_db:
+    room = user_from_db['room']
+    resp = make_response()
+    resp.set_cookie('room',room)
    if user_from_db:
         encrpted_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
         if encrpted_password == user_from_db['token']:

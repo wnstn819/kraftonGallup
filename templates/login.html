@@ -115,20 +115,23 @@
       })
     }
 
-    function listGet() {
-      $.ajax({
-        type: "GET",
-        url: "/list/get",
-        data: {},
-        success: (res) => {
-          if (res['result'] == 'success') {
-            $('#new').empty()
+    function listGet(){
+       $.ajax({
+        type:"GET",
+        url:"/list/get",
+        data:{},
+        success:(res)=>{
+          if(res['result'] == 'success'){
+            if(res['list'].length > 0){
+              $('#new').empty()
             let temp = `
             <p>
             <strong>바로 지금 최신 투표글!!</strong><br>
             <a href="javascript:alert('로그인 해주세요.');">${res['list'][0]['title']}</a>
             </p>`
             $('#new').append(temp)
+            }
+            
           }
 
 
