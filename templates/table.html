@@ -12,7 +12,7 @@
 
         {% if valid_list_data["datas"]|length > 0 %}
         {% for vote in valid_list_data["datas"] %}
-        <div class="columns" onclick="window.location.href='/list/vote/{{vote[" _id"]}}'">
+        <div class="columns" onclick="window.location.href='/list/vote/{{vote["_id"]}}'">
             <div class="column is-1">{{vote["_id"]}}</div>
             <div class="column is-7">{{vote["title"]}}</div>
             <div class="column is-2">{{vote["createId"]}}</div>
@@ -65,7 +65,7 @@
 
         {% if invalid_list_data["datas"]|length > 0 %}
         {% for vote in invalid_list_data["datas"] %}
-        <div class="columns" onclick="window.location.href='/list/vote/{{vote[" _id"]}}'">
+        <div class="columns" onclick="window.location.href='/list/vote/{{vote["_id"]}}'">
             <div class="column is-1">{{vote["_id"]}}</div>
             <div class="column is-7">{{vote["title"]}}</div>
             <div class="column is-2">{{vote["createId"]}}</div>
