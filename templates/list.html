@@ -116,16 +116,16 @@
             })
 
         }
+  
+      // 로그아웃
+      function logout(){
+          $.removeCookie('mytoken')
+          $.removeCookie('room')
+          window.location.href ="/"
+      }
 
 
-
-        // 로그아웃
-        function logout() {
-            $.removeCookie('mytoken')
-            window.location.href = "/"
-        }
-
-        const changeSort = (target) => {
+      const changeSort = (target) => {
             sort = target.value
             find()
 

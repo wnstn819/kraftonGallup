@@ -1,4 +1,4 @@
-from flask import Flask, render_template,jsonify,request,redirect
+from flask import Flask, render_template,jsonify,request,redirect,make_response
 from pymongo import MongoClient           # pymongo를 임포트 하기(패키지 인스톨 먼저 해야겠죠?)
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required,get_jwt_identity
 import datetime
@@ -44,13 +44,16 @@ def login():
    print(id)
    password = request.form['password']
    user_from_db = users_collection.find_one({'id': id})
+   room = user_from_db['room']
+   resp = make_response()
+   resp.set_cookie('room',room)
    if user_from_db:
         encrpted_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
         if encrpted_password == user_from_db['token']:
-             access_token = create_access_token({"identity":user_from_db['id'],"password":password})
+             access_token = create_access_token({"identity":user_from_db['id'],"password":password, "room":room})
              print("토큰 생성 테스트")
             #print(access_token)
-             return jsonify({'token':access_token,'result':'success'}), 200
+             return jsonify({'token':access_token, 'room':room,'result':'success'}), 200
    return jsonify({'msg' : 'The username or password is incorrect','result' : 'fail'})
 
     
@@ -193,8 +196,12 @@ def add_contents():
 @app.route('/list/vote/<number>', methods=["GET"])
 def vote(number):  
    result = list(db.list.find({'_id':int(number)}))
-    
+   
    print(result[0]['voteContents'])
+   
+   for i in json.loads(result[0]['voteContents']) :
+       print(json.loads(result[0]['voteContents'])[i])
+  
    parse = {
        '_id' : result[0]['_id'],
        'title' : result[0]['title'],
@@ -204,10 +211,12 @@ def vote(number):
        'expired': result[0]['expired'],
        'date' : result[0]['date'],
        'createId' : result[0]['createId'],
-       'vaild' : result[0]['vaild']
-   } 
+       'vaild' : result[0]['vaild'],
+       
+    } 
+   
 
-   # token_receive = request.cookies.get('mytoken')
+   
    return render_template('vote.html', data=parse)
 
 @app.route('/list/vote/detail', methods=["POST"])

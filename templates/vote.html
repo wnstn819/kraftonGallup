@@ -35,8 +35,21 @@
         }
     </style>
     <script>
+        let checkVote;
           $(document).ready(function () {
             getUsername();
+
+            var room = $("input[name=class]:checked").val()
+            console.log(room);
+            console.log($.cookie('room'));
+            if(room == "ALL") {
+                $("input[name=option]").attr("disabled", false);
+            }else if(room != $.cookie('room')){
+                $("input[name=option]").attr("disabled", true);
+                $("#vote").attr("disabled",true);
+            }
+            
+
         });
 
         function getUsername() {
@@ -76,6 +89,7 @@
               success: (res) => {
                   
                   console.log("getUserName : " ,res['logged_in_as']['identity']);
+                  checkVote = res['logged_in_as']['room']
                   if (res['result'] == 'success') {
                     $.ajax({
                     type:"POST",
@@ -90,7 +104,6 @@
             })
         }
     
-
        
 
     
@@ -101,7 +114,7 @@
     <div class="wrap">
         <div class="mytitle mb-6">
             <h1 class="title is-1">Casting Vote</h1>
-
+            <h1></h1>
         </div>
 
         <div id="vote-box" class="box mb-4" style="width:600px; margin:auto;">
@@ -140,38 +153,38 @@
                     <div class="control">
                         <label class="radio">
                             {% if data["room"] == '레드' %}
-                            <input type="radio" name="class" disabled checked>
+                            <input type="radio" name="class" value="레드" disabled checked>
                             레드
                             {% else %}
-                            <input type="radio" name="class" disabled>
+                            <input type="radio" name="class" value="레드" disabled>
                             레드
                             {% endif %}
 
                         </label>
                         <label class="radio">
                             {% if data["room"] == '블루' %}
-                            <input type="radio" name="class" disabled checked>
+                            <input type="radio" name="class"  value="블루" disabled checked>
                             블루
                             {% else %}
-                            <input type="radio" name="class" disabled>
+                            <input type="radio" name="class" value="블루"disabled>
                             블루
                             {% endif %}
                         </label>
                         <label class="radio">
                             {% if data["room"] == '그린' %}
-                            <input type="radio" name="class" disabled checked>
+                            <input type="radio" name="class" value="그린" disabled checked>
                             그린
                             {% else %}
-                            <input type="radio" name="class" disabled>
+                            <input type="radio" name="class" value="그린" disabled>
                             그린
                             {% endif %}
                         </label>
                         <label class="radio">
                             {% if data["room"] == 'ALL' %}
-                            <input type="radio" name="class" disabled checked>
+                            <input type="radio" name="class" value="ALL" disabled checked>
                             모든 클래스
                             {% else %}
-                            <input type="radio" name="class" disabled>
+                            <input type="radio" name="class" value="ALL" disabled>
                             모든 클래스
                             {% endif %}
                         </label>
@@ -180,7 +193,7 @@
                 <label class="label">세부항목</label>
 
                 <div id="vote-option" class="m-5">
-
+                    
                     {% for key,value in data['voteContents'].items() %}
                     <div class="field has-addons">
                         <label class="label mr-5 has-text-justified">{{loop.index}}</label>
@@ -190,6 +203,7 @@
                         <div class="control">
                             <div class="button" disabled>{{value|length}}</div>
                             <div class="button">
+                                
                                 <input type="radio" name="option" value={{key}}>
                             </div>
                         </div>
@@ -225,7 +239,7 @@
                     <div class="field">
                         <div class="buttons  is-centered">
                             <div class="control">
-                                <button class="button is-info" onclick="vote({{data['_id']}})">투표하기</button>
+                                <button id="vote" class="button is-info" onclick="vote({{data['_id']}})">투표하기</button>
                             </div>
                             <div class="control">
                                 <button class="button is-info is-light" onclick="window.history.go(-1)">목록으로</button>
