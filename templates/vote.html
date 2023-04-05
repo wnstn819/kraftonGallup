@@ -69,7 +69,7 @@
             <div class="field">
                 <label class="label is-size-4">Title</label>
                 <div class="control">
-                    <div class="block ml-2">{{data[0]["title"]}}</div>
+                    <div class="block ml-2">{{data["title"]}}</div>
                     <!-- <input class="input" type="text" placeholder="input Title" value="title sample" readonly> -->
                 </div>
             </div><!-- /title -->
@@ -77,7 +77,7 @@
             <div class="field">
                 <label class="label is-size-4">Detail</label>
                 <div class="control">
-                    <div class="block ml-2">{{data[0]["details"]}}</div>
+                    <div class="block ml-2">{{data["details"]}}</div>
                     <!-- <textarea   class="textarea" placeholder="detail contents" rows="2" readonly>detaile sample</textarea> -->
                 </div>
             </div><!-- /Detale -->
@@ -88,7 +88,7 @@
                     <label class="label mr-5">중복 제약</label>
                     <div class="control">
                         <label class="radio">   
-                        {% if data[0]["multi"] == 'True' %}
+                        {% if data["multi"] == 'True' %}
                             <input type="radio" name="multi" disabled checked>
                             가능
                             </label>
@@ -114,7 +114,7 @@
                     <label class="label mr-5">클래스 제약</label>
                     <div class="control">
                         <label class="radio">
-                            {% if data[0]["room"] == '레드' %}
+                            {% if data["room"] == '레드' %}
                             <input type="radio" name="class" disabled checked>
                             레드
                             {% else %}
@@ -124,7 +124,7 @@
                             
                         </label>
                         <label class="radio">
-                            {% if data[0]["room"] == '블루' %}
+                            {% if data["room"] == '블루' %}
                             <input type="radio" name="class" disabled checked>
                             블루
                             {% else %}
@@ -133,7 +133,7 @@
                             {% endif %}
                         </label>
                         <label class="radio">
-                            {% if data[0]["room"] == '그린' %}
+                            {% if data["room"] == '그린' %}
                             <input type="radio" name="class" disabled checked>
                             그린
                             {% else %}
@@ -142,7 +142,7 @@
                             {% endif %}
                         </label>
                         <label class="radio">
-                            {% if data[0]["room"] == 'ALL' %}
+                            {% if data["room"] == 'ALL' %}
                             <input type="radio" name="class" disabled checked>
                             모든 클래스
                             {% else %}
@@ -156,23 +156,22 @@
 
                 <div id="vote-option" class="m-5">
                  
-                    {% for vate in (data[0]['voteContents']) %}
-                    <div>hihihihihih</div>
-                    {% endfor %}
+                    {% for key,value in data['voteContents'].items() %}
                     <div class="field has-addons">
-                        <label class="label mr-5 has-text-justified">1</label>
+                        <label class="label mr-5 has-text-justified">{{loop.index}}</label>
                         <div class="control is-expanded">
-                            <input class="input" type="text" value="option 1" disabled>
+                            <input class="input" type="text" value={{key}} disabled>
                         </div>
                         <div class="control">
-                            <div class="button" disabled>7</div>
+                            <div class="button" disabled>{{value|length}}</div>
                             <div class="button">
                                 <input type="radio" name="option" value="">
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 
-                    <div class="field has-addons">
+                    <!-- <div class="field has-addons">
                         <label class="label mr-5">2</label>
                         <div class="control is-expanded">
                             <input class="input" type="text" value="option 2" disabled>
@@ -183,32 +182,8 @@
                                 <input type="radio" name="option">
                             </div>
                         </div>
-                    </div>
-                    <div class="field has-addons">
-                        <label class="label mr-5">3</label>
-                        <div class="control is-expanded">
-                            <input class="input" type="text" value="option 3" disabled>
-                        </div>
-                        <div class="control">
-                            <div class="button" disabled>1</div>
-                            <div class="button">
-                                <input type="radio" name="option">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field has-addons">
-                        <label class="label mr-5">4</label>
-                        <div class="control is-expanded">
-                            <input class="input" type="text" value="option 4" disabled>
-                        </div>
-                        <div class="control">
-                            <div class="button is-hovered" disabled>0</div>
-                            <div class="button">
-                                <input type="radio" name="option">
-                            </div>
-                        </div>
-                    </div>
-
+                    </div> -->
+                   
                     <!-- 추가 버튼 -->
                     <!-- <div class="field is-grouped has-addons has-addons-centered">
                                 <div class="button">+</div>

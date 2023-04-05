@@ -3,7 +3,7 @@ from pymongo import MongoClient           # pymongo를 임포트 하기(패키�
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required,get_jwt_identity
 import datetime
 import hashlib
-import jwt
+import json
 
 client = MongoClient('localhost', 27017)  # mongoDB는 27017 포트로 돌아갑니다.
 
@@ -171,9 +171,22 @@ def add_contents():
 @app.route('/list/vote/<number>', methods=["GET"])
 def vote(number):  
    result = list(db.list.find({'_id':int(number)}))
-   print(str(result) + "@@@@@@@@")
+    
+   print(result[0]['voteContents'])
+   parse = {
+       '_id' : result[0]['_id'],
+       'title' : result[0]['title'],
+       'details' : result[0]['details'],
+       'multi' : result[0]['multi'],
+       'room' : result[0]['room'],
+       'voteContents' : json.loads(result[0]['voteContents']),
+       'date' : result[0]['date'],
+       'createId' : result[0]['createId'],
+       'vaild' : result[0]['vaild']
+   } 
+
    # token_receive = request.cookies.get('mytoken')
-   return render_template('vote.html', data=result)
+   return render_template('vote.html', data=parse)
 
 @app.route('/list/vote/detail', methods=["POST"])
 def voteDetails():
