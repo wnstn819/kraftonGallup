@@ -33,25 +33,67 @@
             text-align: center;
             padding-top: 50px;
         }
-       
-        
     </style>
     <script>
-         $(document).ready(function () {
-           // getDetails()
-        }); 
+          $(document).ready(function () {
+            getUsername();
+        });
 
-        // function getDetails(){
-        //     console.log({number} + "0000000");
-        //     $.ajax({
-        //         type:"POST",
-        //         url:"/list/vote/details",
-        //         data:{"id" : {number}},
-        //         success:(res)=>{
-        //             console.log(res + "  res");
-        //         }
-        //     })
-        // }
+        function getUsername() {
+            $.ajax({
+                type: "GET",
+                headers: {
+                    'Authorization': `Bearer ${$.cookie('mytoken')}`,
+                },
+                url: "/protected",
+                data: {},
+                success: (res) => {
+                    console.log(res);
+                    if (res['result'] == 'success') {
+                        userId = res['logged_in_as']['identity']
+                    } else {
+                        window.location.href = "/"
+                    }
+                }
+
+            })
+        }
+
+   
+
+        function vote(id){
+            
+            var id = id;
+            var select = $('input[name=option]:checked').val()
+
+            $.ajax({
+              type: "GET",
+              headers: {
+                  'Authorization' : `Bearer ${$.cookie('mytoken')}`,
+              },
+              url: "/protected",
+              data: {},
+              success: (res) => {
+                  
+                  console.log("getUserName : " ,res['logged_in_as']['identity']);
+                  if (res['result'] == 'success') {
+                    $.ajax({
+                    type:"POST",
+                    url:"/list/vote/update",
+                    data:{"id":id, "select" : select, "userId": res['logged_in_as']['identity']},
+                    success:(res)=>{
+                        window.location.reload()
+                    }
+                     })
+                    }
+                }
+            })
+        }
+    
+
+       
+
+    
     </script>
 </head>
 
@@ -59,7 +101,7 @@
     <div class="wrap">
         <div class="mytitle mb-6">
             <h1 class="title is-1">Casting Vote</h1>
-  
+
         </div>
 
         <div id="vote-box" class="box mb-4" style="width:600px; margin:auto;">
@@ -85,28 +127,11 @@
 
             <div id="vote-setting" class="ml-5">
                 <div class="field has-addons">
-                    <label class="label mr-5">중복 제약</label>
+                    <label class="label mr-5">만료 일자</label>
                     <div class="control">
-                        <label class="radio">   
-                        {% if data["multi"] == 'True' %}
-                            <input type="radio" name="multi" disabled checked>
-                            가능
-                            </label>
-                            <label class="radio">
-                            <input type="radio" name="multi" disabled >
-                            불가능
-                            </label>
-                        {% else %}
-                            <input type="radio" name="multi" disabled>
-                            가능
-                            </label>
-                            <label class="radio">
-                            <input type="radio" name="multi" disabled checked>
-                            불가능
-                            </label>
-                        {% endif %}
+                        <input disabled value={{data["expired"]}}/>
 
-                            
+
                     </div>
                 </div><!-- /Multi -->
 
@@ -121,7 +146,7 @@
                             <input type="radio" name="class" disabled>
                             레드
                             {% endif %}
-                            
+
                         </label>
                         <label class="radio">
                             {% if data["room"] == '블루' %}
@@ -155,7 +180,7 @@
                 <label class="label">세부항목</label>
 
                 <div id="vote-option" class="m-5">
-                 
+
                     {% for key,value in data['voteContents'].items() %}
                     <div class="field has-addons">
                         <label class="label mr-5 has-text-justified">{{loop.index}}</label>
@@ -165,12 +190,12 @@
                         <div class="control">
                             <div class="button" disabled>{{value|length}}</div>
                             <div class="button">
-                                <input type="radio" name="option" value="">
+                                <input type="radio" name="option" value={{key}}>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
-                
+
                     <!-- <div class="field has-addons">
                         <label class="label mr-5">2</label>
                         <div class="control is-expanded">
@@ -183,7 +208,7 @@
                             </div>
                         </div>
                     </div> -->
-                   
+
                     <!-- 추가 버튼 -->
                     <!-- <div class="field is-grouped has-addons has-addons-centered">
                                 <div class="button">+</div>
@@ -200,10 +225,10 @@
                     <div class="field">
                         <div class="buttons  is-centered">
                             <div class="control">
-                                <button class="button is-info">투표하기</button>
+                                <button class="button is-info" onclick="vote({{data['_id']}})">투표하기</button>
                             </div>
                             <div class="control">
-                                <button class="button is-info is-light" onclick="">목록으로</button>
+                                <button class="button is-info is-light" onclick="window.history.go(-1)">목록으로</button>
                             </div>
                         </div>
                     </div>

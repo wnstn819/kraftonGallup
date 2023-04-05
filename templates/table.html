@@ -9,13 +9,10 @@
                         <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Author</div>
                         <div class="column is-2 has-background-light has-text-weight-semibold is-size-6">Date</div>
                     </div>
-                    <!-- {{validList}}
-                    <br><br><br><br>
-                    {{validList[0]}}
-                    <br><br><br><br>
-                    {{validList[0]["title"]}} -->
-                    
+                                    
                     <!-- 페이징 없이 전체표시 -->
+                    {% if validList|length > 0 %}
+
                     {% for vote in validList %}
                     <div class="columns" onclick="window.location.href='/list/vote/{{vote["_id"]}}'">
                         <div class="column is-1">{{vote["_id"]}}</div>
@@ -24,6 +21,13 @@
                         <div class="column is-2">{{vote["date"]}}</div>
                     </div>
                     {% endfor%}
+                 
+                    {% else %}
+                    <div class="columns">
+                        <div class="column is-full">No data</div>
+                    </div>
+
+                    {% endif%}
                     <!-- 버튼 껍데기 -->
                     <!-- 
                     <div class="columns">

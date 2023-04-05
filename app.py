@@ -141,21 +141,23 @@ def contents():
 def add_contents():  
    title = request.form['title']
    details= request.form['details']
-   multi = request.form['multi']
    room = request.form['room']
+   expired = request.form['expired']
+   convert_date = datetime.datetime.strptime(expired, "%Y-%m-%d"),
    voteContents = request.form['voteContents']
    createId = request.form['createId']
    vaild = request.form['valid']
 
    seq = db.listCounters.find({})[0]['seq']
+
    new_contents = {
        "_id":seq,
        "title": title,
        "details" : details,
-       "multi" : multi,
        "room" : room,
+       "expired" : convert_date[0],
        "voteContents" : voteContents,
-       "date" : datetime.datetime.now(),
+       "date" : datetime.datetime.now().strftime("%Y-%m-%d"),
        "createId": createId,
        "vaild" : vaild,
    }
@@ -177,9 +179,9 @@ def vote(number):
        '_id' : result[0]['_id'],
        'title' : result[0]['title'],
        'details' : result[0]['details'],
-       'multi' : result[0]['multi'],
        'room' : result[0]['room'],
        'voteContents' : json.loads(result[0]['voteContents']),
+       'expired': result[0]['expired'],
        'date' : result[0]['date'],
        'createId' : result[0]['createId'],
        'vaild' : result[0]['vaild']
@@ -194,6 +196,35 @@ def voteDetails():
       print(id + "ddddddid")
       result = list(db.list.find({'_id':int(id)}))
       return jsonify({'result':'success', 'details':result})
+
+@app.route('/list/vote/update', methods=["POST"])
+def vote_update():
+    #투표하려면 필요 한 것 투표 id, user id, 투표항목
+   
+    id = request.form['id']
+    select = request.form['select']
+    userId = request.form['userId']
+    result = list(db.list.find({'_id':int(id)}))
+    parse = json.loads(result[0]['voteContents'])
+    value=[]
+
+    for key in parse.keys():
+        if key == select:
+            if userId not in parse[key]:
+                value = parse[key]
+                value.append(userId)
+                parse.update({key :value})   
+        else :
+            if userId in parse[key]:
+                value = parse[key]
+                value.remove(userId)
+                parse.update({key :value})
+   
+
+    parse = json.dumps(parse)
+    db.list.update_one({'_id' :int(id)} ,{'$set':{ 'voteContents': str(parse)}})
+    return jsonify({"result": "success"})
+
 
 
 if __name__ == '__main__':  

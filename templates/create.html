@@ -99,9 +99,8 @@
         function create() {
             var title = $("#title").val()
             var details = $("#details").val()
-            var multi = $("input[name=multi]:checked").val()
             var room = $("input[name=class]:checked").val()
-
+            var expired = $("#expired").val()
             let parse = {};
             for (i = 1; i <= cnt; i++) {
                 let value = $(`#text${i}`).val()
@@ -111,7 +110,7 @@
             $.ajax({
                 type: "POST",
                 url: "/list/create/post",
-                data: { "title": title, "details": details, "multi": multi, "room": room, "voteContents": JSON.stringify(parse), "createId": userId, "valid": 1 },
+                data: { "title": title, "details": details, "room": room, "expired": expired, "voteContents": JSON.stringify(parse), "createId": userId, "valid": 1 },
                 success: (res) => {
                     console.log(res);
                     console.log(res['result']);
@@ -161,7 +160,7 @@
                 <div class="field has-addons">
                     <label class="label mr-5 has-text-justified">투표 마감일</label>
                     <div class="control">
-                        <input id="text1" class="input is-small" type="text" placeholder="yyyy-MM-dd">
+                        <input id="expired" class="input is-small" type="text" placeholder="yyyy-MM-dd">
                     </div>
                 </div>
                 <!-- Multi -->
