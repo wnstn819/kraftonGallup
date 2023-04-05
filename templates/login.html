@@ -1,274 +1,280 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
-    <!-- use bulma -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-    <title>크래프톤 정글 BLUE | Casting Vote</title>
-    <style>
-        .wrap {
-            margin: auto;
-            width: 1200px;
-        }
-
-        .mytitle {
-            color: black;
-            width: 1200px;
-            height: 100px;
-            border-radius: 10px;
-            text-align: center;
-            padding-top: 50px;
-        }
-   
-        #join-box {
-          display: none;
-        }
-
-    </style>
-    <script>
-      let doubleCheckBoolean = false;
-       $(document).ready(function () {
-            $.cookie('mytoken') && getUsername();
-
-        });
-
-         function getUsername(){
-            $.ajax({
-            type: "GET",
-            headers: {
-                'Authorization' : `Bearer ${$.cookie('mytoken')}`,
-            },
-            url: "/protected",
-            data: {},
-            success: (res) => {
-                console.log(res);
-                if (res['result'] == 'success') {
-                    window.location.replace("/list")
-                }else{
-                    console.log("fail");
-                }
-            }
-
-        })
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+  <!-- use bulma -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <title>크래프톤 정글 BLUE | Casting Vote</title>
+  <style>
+    .wrap {
+      margin: auto;
+      width: 1200px;
     }
 
-       function joinAdd() {
-        var id = $('#join-id').val();
-        var pw = $('#join-pw').val();
-        var name = $("#join-name").val()
-        var age = $("#join-age").val()
-        var gender = $("input[name=gender]:checked").val()
-        var room = $("input[name=class]:checked").val()
-            
+    .mytitle {
+      color: black;
+      width: 1200px;
+      height: 100px;
+      border-radius: 10px;
+      text-align: center;
+      padding-top: 50px;
+    }
 
-        doubleCheckBoolean ? $.ajax({
-            type: "POST",
-            url: "/join/add",
-            data: { "id": id, "password" : pw , "name": name, "age" : age, "gender": gender, "room" : room},
-            success: (res) => {
-                console.log(res);
-                if (res['result'] == 'success') {
-                  alert("생성되었습니다!.") 
-                  closeJoin();                       
-                }else{
-                  console.log("fail");
-                }
-            }
+    #join-box {
+      display: none;
+    }
+  </style>
+  <script>
 
-        }) : alert("ID 중복체크 먼저 해주시기 바랍니다.")
+    let doubleCheckBoolean = false;
 
+
+    $(document).ready(function () {
+      $.cookie('mytoken') && getUsername();
+    });
+
+    function getUsername() {
+      $.ajax({
+        type: "GET",
+        headers: {
+          'Authorization': `Bearer ${$.cookie('mytoken')}`,
+        },
+        url: "/protected",
+        data: {},
+        success: (res) => {
+          console.log(res);
+          if (res['result'] == 'success') {
+            window.location.replace("/list")
+          } else {
+            console.log("fail");
+          }
         }
 
-        // 로그인
-        function login() {
-        console.log("제출 클릭");
+      })
+    }
 
-        let id = $('#login-id').val();
-        let pw = $('#login-pw').val();
+    function joinAdd() {
+      var id = $('#join-id').val();
+      var pw = $('#join-pw').val();
+      var name = $("#join-name").val()
+      var age = $("#join-age").val()
+      var gender = $("input[name=gender]:checked").val()
+      var room = $("input[name=class]:checked").val()
 
-        $.ajax({
-            type: "POST",
-            url: "/home/login",
-            data: { "id": id, "password" : pw },
-            success: (res) => {
-                console.log(res);
-                if (res['result'] == 'success') {
-                    $.cookie('mytoken', res['token'], {path: '/'});
-                    window.location.replace("/list")
-                        
-                }else{
-                    alert("ID와 Password를 확인 해주세요!")
-                }
-            }
 
-        })
+      doubleCheckBoolean ? $.ajax({
+        type: "POST",
+        url: "/join/add",
+        data: { "id": id, "password": pw, "name": name, "age": age, "gender": gender, "room": room },
+        success: (res) => {
+          console.log(res);
+          if (res['result'] == 'success') {
+            alert("생성되었습니다!.")
+            closeJoin();
+          } else {
+            console.log("fail");
+          }
         }
 
-        //중복체크
-        function doubleCheck(){
-          var id = $('#join-id').val();
-          $.ajax({
-            type: "POST",
-            url:  "/join/double",
-            data: {"id":id},
-            success:(res)=>{
-              if(res['result'] == 'success'){
-                alert(res['msg'])
-                doubleCheckBoolean = true
-              }else{
-                alert(res['msg'])
-                doubleCheckBoolean = false
-              }
-            }
-          })
-            
+      }) : alert("ID 중복체크 먼저 해주시기 바랍니다.")
+
+    }
+
+    // 로그인
+    function login() {
+      console.log("제출 클릭");
+
+      let id = $('#login-id').val();
+      let pw = $('#login-pw').val();
+
+      $.ajax({
+        type: "POST",
+        url: "/home/login",
+        data: { "id": id, "password": pw },
+        success: (res) => {
+          console.log(res);
+          if (res['result'] == 'success') {
+            $.cookie('mytoken', res['token'], { path: '/' });
+            window.location.replace("/list")
+
+          } else {
+            alert("ID와 Password를 확인 해주세요!")
+          }
         }
-        function changeCheck(){
-          doubleCheckBoolean = false
+
+      })
+    }
+
+    //중복체크
+    function doubleCheck() {
+      var id = $('#join-id').val();
+      $.ajax({
+        type: "POST",
+        url: "/join/double",
+        data: { "id": id },
+        success: (res) => {
+          if (res['result'] == 'success') {
+            alert(res['msg'])
+            doubleCheckBoolean = true
+          } else {
+            alert(res['msg'])
+            doubleCheckBoolean = false
+          }
         }
-       
-        function openJoin() {
-            $('#join-box').show()
-        }
-        function closeJoin() {
-            $('#join-id').val("")
-            $('#join-pw').val("")
-            $("#join-name").val("")
-            $("#join-age").val("")
-            $('#join-box').hide()
-        }
-    </script>
+      })
+
+    }
+    function changeCheck() {
+      doubleCheckBoolean = false
+    }
+
+    function openJoin() {
+      $('#join-box').show()
+    }
+    function closeJoin() {
+      $('#join-id').val("")
+      $('#join-pw').val("")
+      $("#join-name").val("")
+      $("#join-age").val("")
+      $('#join-box').hide()
+    }
+  </script>
 </head>
+
 <body>
   <div class="wrap">
     <div class="mytitle mb-6">
       <h1 class="title is-1">Casting Vote</h1>
     </div>
 
-  <div class="loginbox mb-4" style="margin:auto; width: 400px;">
+    <div class="loginbox mb-4" style="margin:auto; width: 400px;">
 
 
-    <div class="field">
-      <label class="label">ID</label>
-      <div class="control">
-        <input id="login-id" class="input" type="text" placeholder="Text input">
-      </div>
-    </div>
-    <div class="field">
-      <label class="label">Password</label>
-      <div class="control">
-        <input id="login-pw" class="input" type="password" placeholder="Text input">
-      </div>
-    </div>
-    <div>
-      <button type="submit" class="button is-primary is-fullwidth mb-1" onclick="login()">Login</button>
-      <button class="button is-light is-fullwidth" onclick="openJoin()">Join</button>
-    </div>
-  </div>
-  <div class="notification mb-6" style="width:500px;margin:auto;text-align: center;">
-    <p>
-      <strong>바로지금 HOT 투표글</strong><br>
-      <a href="#">학습 vs 실습 뭐가 먼저인가?</a>
-    </p>
-  </div>
-
-  <div id="join-box" class="box mb-4" style="width:1000px; margin:auto;">
-    <div class="columns">
-      <div class="column">
+      <div class="field">
         <label class="label">ID</label>
-        <div class="field has-addons ">
-          <div class="control is-expanded ">
-            <input id="join-id" class="input" type="text" placeholder="input ID" oninput="changeCheck()">
-          </div>
-          <div class="control">
-            <a class="button" onclick="doubleCheck()">double check</a>
-          </div>
-        </div>
-    
-        <div class="field">
-          <label class="label">Password</label>
-          <div class="control">
-            <input id="join-pw" class="input" type="password" placeholder="input Password">
-          </div>
-          <p class="help is-success">This password is available</p>
-        </div>
-        <div class="field">
-          <label  class="label">Confirm Password</label>
-          <div class="control">
-            <input id ="join-confirm-pw" class="input" type="password" placeholder="input Password">
-          </div>
-          <p class="help is-danger">This password is valid</p>
+        <div class="control">
+          <input id="login-id" class="input" type="text" placeholder="Text input">
         </div>
       </div>
-      
-      <div class="column">
-        <div class="field">
-          <label class="label">Name</label>
-          <div class="control">
-            <input id="join-name" class="input" type="text" placeholder="input Name">
-          </div>
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input id="login-pw" class="input" type="password" placeholder="Text input">
         </div>
-        <div class="field">
-          <label class="label">Age</label>
-          <div class="control">
-            <input id="join-age" class="input" type="text" placeholder="input Age">
+      </div>
+      <div>
+        <button type="submit" class="button is-primary is-fullwidth mb-1" onclick="login()">Login</button>
+        <button class="button is-light is-fullwidth" onclick="openJoin()">Join</button>
+      </div>
+    </div>
+    <div class="notification mb-6" style="width:500px;margin:auto;text-align: center;">
+      <p>
+        <strong>바로지금 HOT 투표글</strong><br>
+        <a href="#">학습 vs 실습 뭐가 먼저인가?</a>
+      </p>
+    </div>
+
+    <div id="join-box" class="box mb-4" style="width:1000px; margin:auto;">
+      <div class="columns">
+        <div class="column">
+          <label class="label">ID</label>
+          <div class="field has-addons ">
+            <div class="control is-expanded ">
+              <input id="join-id" class="input" type="text" placeholder="input ID" oninput="changeCheck()">
+            </div>
+            <div class="control">
+              <a class="button" onclick="doubleCheck()">double check</a>
+            </div>
           </div>
-        </div>
-        <div class="field has-addons">
-          <label class="label mr-4">Gender</label>
-          <div class="control">
-            <label class="radio">
-              <input type="radio" name="gender" value="Male" checked>
-              Male
-            </label>
-            <label class="radio">
-              <input type="radio" name="gender" value="Female">
-              Female
-            </label>
+
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+              <input id="join-pw" class="input" type="password" placeholder="input Password">
+            </div>
+            <p class="help is-success">This password is available</p>
+          </div>
+          <div class="field">
+            <label class="label">Confirm Password</label>
+            <div class="control">
+              <input id="join-confirm-pw" class="input" type="password" placeholder="input Password">
+            </div>
+            <p class="help is-danger">This password is valid</p>
           </div>
         </div>
 
-        <div class="field has-addons">
-          <label class="label mr-4">Class</label>
-          <div class="control">
-            <label class="radio">
-              <input type="radio" name="class" value="레드" checked>
-              red
-            </label>
-            <label class="radio">
-              <input type="radio" name="class" value="블루">
-              Blue
-            </label>
-            <label class="radio">
-              <input type="radio" name="class" value="그린">
-              Green
-            </label>
+        <div class="column">
+          <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+              <input id="join-name" class="input" type="text" placeholder="input Name">
+            </div>
           </div>
-        </div>
-              
-        <div class="field is-grouped has-addons has-addons-right">
-          <div class="control">
-            <button class="button is-link" onclick="joinAdd()">Submit</button>
+          <div class="field">
+            <label class="label">Age</label>
+            <div class="control">
+              <input id="join-age" class="input" type="text" placeholder="input Age">
+            </div>
           </div>
-          <div class="control">
-            <button class="button is-link is-light" onclick="closeJoin()">Cancel</button>
+          <div class="field has-addons">
+            <label class="label mr-4">Gender</label>
+            <div class="control">
+              <label class="radio">
+                <input type="radio" name="gender" value="Male" checked>
+                Male
+              </label>
+              <label class="radio">
+                <input type="radio" name="gender" value="Female">
+                Female
+              </label>
+            </div>
+          </div>
+
+          <div class="field has-addons">
+            <label class="label mr-4">Class</label>
+            <div class="control">
+              <label class="radio">
+                <input type="radio" name="class" value="레드" checked>
+                red
+              </label>
+              <label class="radio">
+                <input type="radio" name="class" value="블루">
+                Blue
+              </label>
+              <label class="radio">
+                <input type="radio" name="class" value="그린">
+                Green
+              </label>
+            </div>
+          </div>
+
+          <div class="field is-grouped has-addons has-addons-right">
+            <div class="control">
+              <button class="button is-link" onclick="joinAdd()">Submit</button>
+            </div>
+            <div class="control">
+              <button class="button is-link is-light" onclick="closeJoin()">Cancel</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-</div>
-</div>
+  </div>
+  </div>
 </body>
+
 </html>

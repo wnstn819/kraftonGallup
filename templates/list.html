@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +10,10 @@
     <!-- Use Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <!-- Use JQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.3.js" 
-            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" 
-            crossorigin="anonymous"></script>
-    <script type="text/javascript" 
-            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <title>크래프톤 정글 BLUE | Casting Vote</title>
     <style>
         .wrap {
@@ -40,68 +40,69 @@
             find()
 
         });
-  
-      // 토큰 관리
-       function getUsername(){
-            $.ajax({
-              type: "GET",
-              headers: {
-                  'Authorization' : `Bearer ${$.cookie('mytoken')}`,
-              },
-              url: "/protected",
-              data: {},
-              success: (res) => {
-                  console.log(res);
-                  if (res['result'] == 'success') {
-                    
-                          
-                  }else{
-                      window.location.replace("/")
-                  }
-              }
-              
-            })
-        }   
-  
-      // 게시글 조회
-      function find(){
-        sort = "_id"
-        $.ajax({
-            type:"POST",
-            url: "/list/get",
-            data:{"sort":sort},
-            success:(res)=>{
 
-                if(res['result'] == 'success'){
-                    console.log(res['list'])
+        // 토큰 관리
+        function getUsername() {
+            $.ajax({
+                type: "GET",
+                headers: {
+                    'Authorization': `Bearer ${$.cookie('mytoken')}`,
+                },
+                url: "/protected",
+                data: {},
+                success: (res) => {
+                    console.log(res);
+                    if (res['result'] == 'success') {
+
+
+                    } else {
+                        window.location.replace("/")
+                    }
                 }
-            }
-        })
-  
-      }
-  
-  
-      function create(){
-          window.location.replace("/list/create")
-      }
-  
-  
-      // 로그아웃
-      function logout(){
-          $.removeCookie('mytoken')
-          window.location.replace("/")
-      }
-    
-  
-          
-  </script>
+
+            })
+        }
+
+        // 게시글 조회
+        function find() {
+            sort = "_id"
+            $.ajax({
+                type: "POST",
+                url: "/list/get",
+                data: { "sort": sort },
+                success: (res) => {
+
+                    if (res['result'] == 'success') {
+                        console.log(res['list'])
+                    }
+                }
+            })
+
+        }
+
+
+        function create() {
+            window.location.replace("/list/create")
+        }
+
+
+        // 로그아웃
+        function logout() {
+            $.removeCookie('mytoken')
+            window.location.replace("/")
+        }
+
+
+
+    </script>
 </head>
+
 <body>
     <div class="wrap">
         <div class="mytitle mb-6">
             <h1 class="title is-1">Casting Vote</h1>
         </div>
- 
+
         <div class="columns">
             <div class="column">
                 <div id="list-box" style="margin:autho;width:700px;">
@@ -109,8 +110,8 @@
                         <div class="column is-one-fifth">
                             <div class="select">
                                 <select>
-                                  <option>최신순</option>
-                                  <option>인기순</option>
+                                    <option>최신순</option>
+                                    <option>인기순</option>
                                 </select>
                             </div>
                         </div>
@@ -215,10 +216,10 @@
                         <div class="column is-one-fifth">
                             <div class="select">
                                 <select>
-                                  <option>최신순</option>
-                                  <option>인기순</option>
+                                    <option>최신순</option>
+                                    <option>인기순</option>
                                 </select>
-                              </div>
+                            </div>
                         </div>
                     </div>
                     <div class="columns">
@@ -307,4 +308,5 @@
         </div>
     </div>
 </body>
+
 </html>
